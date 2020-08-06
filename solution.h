@@ -68,6 +68,7 @@ public:
     void reorderList(ListNode* head); // #143
     ListNode *reverse_list(ListNode* head);
     vector<vector<int>> levelOrderBottom(TreeNode* root); // # 107
+    vector<int> preorderTraversal(TreeNode* root); // #144
 };
 
 #endif

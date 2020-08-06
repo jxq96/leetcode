@@ -660,3 +660,25 @@ vector<vector<int>> solution::levelOrderBottom(TreeNode *root){
             
         }
 }
+
+vector<int> solution::preorderTraversal(TreeNode *root){
+    if(root == NULL){
+        return vector<int>();
+    }
+    stack<TreeNode*> s;
+    vector<int> res;
+    TreeNode *entry;
+    s.push(root);
+    while(!s.empty()){
+        entry = s.top();
+        s.pop();
+        res.emplace_back(entry->val);
+        if(entry->right){
+            s.push(entry->right);
+        }
+        if(entry->left){
+            s.push(entry->left);
+        }
+    }
+    return res;
+}
