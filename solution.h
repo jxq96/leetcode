@@ -65,7 +65,7 @@ public:
     vector<string> wordBreak(string s, vector<string>& wordDict); // #140
     bool hasCycle(ListNode *head); // #141
     ListNode* detectCycle(ListNode *head); // #142
-    void reorderList(ListNode* head);
+    void reorderList(ListNode* head); // #143
     ListNode *reverse_list(ListNode* head);
 };
 
