@@ -3,11 +3,16 @@
 using namespace std;
 int main(){
     solution sol;
-    ListNode *l = new ListNode(1,new ListNode(2,new ListNode(3,new ListNode(4))));
-    ListNode *r = sol.reverse_list(l);
-    while(r){
-        cout << r->val << " ";
-        r = r->next;
+    TreeNode *root = new TreeNode(3);
+    root->left = new TreeNode(9);
+    root->right = new TreeNode(20);
+    root->right->left = new TreeNode(15);
+    root->right->right = new TreeNode(7);
+    auto res = sol.levelOrderBottom(root);
+    for(auto vec : res){
+        for(auto num : vec){
+            cout << num << " ";
+        }
+        cout << endl;
     }
-    cout << endl;
 }

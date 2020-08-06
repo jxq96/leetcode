@@ -622,3 +622,41 @@ void solution::reorderList(ListNode* head){
     }
     recur_reorder_list(head,length);
 }
+
+vector<vector<int>> solution::levelOrderBottom(TreeNode *root){
+        if(root == NULL){
+            return vector<vector<int>>();
+        }
+        else{
+            queue<TreeNode*> visit_queue;
+            visit_queue.push(root);
+            visit_queue.push(NULL);
+            stack<vector<int>> reverse_res_stack;
+            while (!visit_queue.empty() && visit_queue.front()!=NULL)
+            {
+                vector<int> level_nodes;
+                while(visit_queue.front()!=NULL){
+                    TreeNode* present_node = visit_queue.front();
+                    visit_queue.pop();
+                    if(present_node->left){
+                        visit_queue.push(present_node->left);
+                    }
+                    if(present_node->right){
+                        visit_queue.push(present_node->right);
+                    }
+                    level_nodes.push_back(present_node->val);
+                }
+                reverse_res_stack.push(level_nodes);
+                visit_queue.push(NULL);
+                visit_queue.pop(); // pop null node in the queue
+            }
+            vector<vector<int>>res;
+            while (!reverse_res_stack.empty())
+            {
+                res.push_back(reverse_res_stack.top());
+                reverse_res_stack.pop();
+            }
+            return res;
+            
+        }
+}
