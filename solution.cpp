@@ -660,3 +660,31 @@ vector<vector<int>> solution::levelOrderBottom(TreeNode *root){
             
         }
 }
+
+TreeNode* solution::sortedListToBST(ListNode *head){
+    if(head == NULL){
+        return NULL;
+    }
+    if(head->next == NULL){
+        return new TreeNode(head->val);
+    }
+    ListNode *slow, *fast, *prev;
+    slow = fast = prev = head;
+    while(fast!= NULL && fast->next != NULL){
+        fast = fast->next->next;
+        slow = slow->next;
+    }
+    while(prev->next != slow){
+        prev = prev->next;
+    }
+    TreeNode *root = new TreeNode(slow->val);
+    prev->next = NULL;
+    root->left = sortedListToBST(head);
+    root->right = sortedListToBST(slow->next);
+    prev->next = slow;
+    return root;
+}
+
+vector<int> solution::preorderTraversal(TreeNode *root){
+    
+}
