@@ -706,3 +706,56 @@ vector<int> solution::preorderTraversal(TreeNode *root){
     }
     return res;
 }
+
+vector<int> solution::inorderTraversal(TreeNode *root){
+    if(root == NULL){
+        return vector<int>();
+    }
+    vector<int> ret;
+    TreeNode *p = root;
+    stack<TreeNode*> s;
+    while(p || !s.empty()){
+        while(p){
+            s.push(p);
+            p = p->left;
+        }
+        if(!s.empty());
+        {
+            p = s.top();
+            s.pop();
+            ret.emplace_back(p->val);
+            p = p->right;
+        }
+    }
+    return ret;
+}
+
+vector<int> solution::postorderTraversal(TreeNode *root){
+    if(root == NULL){
+        return vector<int>();
+    }
+    TreeNode *cur = root;
+    TreeNode *prev = NULL;
+    stack<TreeNode*> s;
+    vector<int> ret;
+    while(cur || !s.empty()){
+        while(cur){
+            s.push(cur);
+            cur = cur->left;
+        }
+        if(!s.empty()){
+            cur = s.top();
+            s.pop();
+            if(cur->right == NULL || cur->right == prev){
+                ret.emplace_back(cur->val);
+                prev = cur;
+                cur = NULL;
+            }
+            else{
+                s.push(cur);
+                cur = cur->right;
+            }
+        }
+    }
+    return ret;
+}

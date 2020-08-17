@@ -69,7 +69,9 @@ public:
     ListNode *reverse_list(ListNode* head);
     vector<vector<int>> levelOrderBottom(TreeNode* root); // # 107
     TreeNode* sortedListToBST(ListNode *head); // # 109
+    vector<int> inorderTraversal(TreeNode *root); // # 94
     vector<int> preorderTraversal(TreeNode *root); // # 144
+    vector<int> postorderTraversal(TreeNode *root); // # 145
 
 };
 
