@@ -759,3 +759,40 @@ vector<int> solution::postorderTraversal(TreeNode *root){
     }
     return ret;
 }
+
+ListNode* solution::insertionSortList(ListNode *head){
+    if(head == NULL || head->next == NULL){
+        return head;
+    }
+    ListNode *outer = head;
+    ListNode *inner = NULL;
+    while(outer->next){
+        inner = outer->next;
+        outer->next = inner->next;
+        if(inner->val >= outer->val){ //means inner is maximum
+            inner->next = outer->next;
+            outer->next = inner;
+            outer = inner;
+            continue;
+        }
+        if(head->val > inner->val){
+            inner->next = head;
+            head = inner;
+        }
+        else{
+            ListNode *tmp1 = head;
+            ListNode *tmp2 = head->next;
+            while(tmp2 && tmp2->val <= inner->val && tmp2 != outer){
+                tmp1 = tmp2;
+                tmp2 = tmp2->next;
+                if(tmp1->val > outer->val){
+                    outer = tmp1;
+                }
+            }
+            tmp1->next = inner;
+            inner->next = tmp2;
+        }
+        // outer = outer->next;
+    }
+    return head;
+}
