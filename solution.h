@@ -73,6 +73,7 @@ public:
     vector<int> preorderTraversal(TreeNode *root); // # 144
     vector<int> postorderTraversal(TreeNode *root); // # 145
     ListNode* insertionSortList(ListNode* head); // #147
+    void recoverTree(TreeNode *root); // #99
 };
 
 #endif

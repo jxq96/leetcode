@@ -7,6 +7,7 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <stack>
+#include <utility>
 using std::unordered_map;
 using std::map;
 using std::pair;
@@ -20,6 +21,7 @@ using std::minmax_element;
 using std::stack;
 using std::min;
 using std::max;
+using std::swap;
 int solution::recurMaxPathSum(TreeNode* node){
     if(node == NULL){
         return 0;
@@ -795,4 +797,46 @@ ListNode* solution::insertionSortList(ListNode *head){
         // outer = outer->next;
     }
     return head;
+}
+
+void solution::recoverTree(TreeNode *root){  //隐式中序遍历，需要注意两个异常node的顺序不同
+    TreeNode* x, *y, *prev;
+    TreeNode *p = root;
+    stack<TreeNode*> s;
+    prev = NULL;
+    x = NULL;
+    y = NULL;
+    if(root == NULL){
+        return;
+    }
+    while (p || !s.empty())
+    {
+        while (p)
+        {
+            s.push(p);
+            p = p->left;
+        }
+        if(!s.empty()){
+            if(!prev){
+                prev = s.top();
+                s.pop();
+                p = prev->right;
+                continue;
+            }
+            p = s.top();
+            s.pop();
+            if(prev->val > p->val){
+                y = p;
+                if(!x){
+                    x = prev;
+                }
+                else{
+                    break;
+                }
+            }
+            prev = p;
+            p = p->right;
+        }
+    }
+    swap(x->val, y->val);
 }
