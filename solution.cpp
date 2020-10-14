@@ -840,3 +840,40 @@ void solution::recoverTree(TreeNode *root){  //隐式中序遍历，需要注意
     }
     swap(x->val, y->val);
 }
+
+ListNode* solution::mergesortList_recursion(ListNode *head){
+    if(head == NULL || head->next == NULL){
+        return head;
+    }
+    // then find the middle node of the single-linked list
+    ListNode *fast = head->next, *slow = head, *tmp;
+    while (fast != NULL && fast->next != NULL)
+    {
+        fast = fast->next->next;
+        slow = slow->next;
+    }
+    tmp = slow->next;
+    slow->next = NULL;
+    ListNode *left = mergesortList_recursion(head);
+    ListNode *right = mergesortList_recursion(tmp);
+    ListNode  res = ListNode(0);
+    ListNode *merge = &res;
+    // merge two sorted list
+    while(left != NULL && right != NULL){
+        if(left->val > right->val){
+            merge->next = right;
+            right = right->next;
+        }
+        else{
+            merge->next = left;
+            left = left->next;
+        }
+        merge = merge->next;
+    }
+    merge->next = left?left:right;
+    return res.next;
+}
+
+ListNode* solution::mergesortList(ListNode *head){
+
+}
