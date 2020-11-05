@@ -874,6 +874,69 @@ ListNode* solution::mergesortList_recursion(ListNode *head){
     return res.next;
 }
 
-ListNode* solution::mergesortList(ListNode *head){
-
+ListNode* solution::mergesortList(ListNode *head){ //no-recursion of linked list merge sort
+    int length, interval, l1, l2;
+    interval = 1;
+    length = 0;
+    ListNode *tmp = head, *pre, *h1, *h2;
+    while (tmp)
+    {
+        length ++;
+        tmp = tmp->next;
+    }
+    ListNode res(0);
+    // to find the head of the list easily
+    res.next = head;
+    while (interval < length)
+    {
+        pre = &res;
+        tmp = res.next;
+        while(tmp){
+            int i = interval;
+            h1 = tmp;
+            while(i && tmp){
+                i --;
+                tmp = tmp->next; 
+            }
+            if(i){ // h2 is none
+                break;
+            }
+            h2 = tmp;
+            i = interval;
+            while(i && tmp){
+                i --;
+                tmp = tmp->next;
+            }
+            l1 = interval;
+            l2 = interval - i;
+            while(l1 && l2){
+                if(h1->val <= h2->val){
+                    pre->next = h1;
+                    h1 = h1->next;
+                    l1--;
+                }
+                else{
+                    pre->next = h2;
+                    h2 = h2->next;
+                    l2--;
+                }
+                pre = pre->next;
+            }
+            if(l1){
+                pre->next = h1;
+            }
+            else{
+                pre->next = h2;
+            }
+            while(l1 > 0 || l2 > 0){
+                pre = pre->next;
+                l1 --;
+                l2 --;
+            }
+            pre->next = tmp;
+        }
+        interval *= 2;
+    }
+    return res.next;
+    
 }
