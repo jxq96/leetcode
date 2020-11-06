@@ -76,6 +76,7 @@ public:
     void recoverTree(TreeNode *root); // #99
     ListNode *mergesortList_recursion(ListNode *head); // #148
     ListNode *mergesortList(ListNode *head); // #148, non-recursion mergesort list
+    ListNode *quicksortList(ListNode *head);
 };
 
 #endif

@@ -940,3 +940,55 @@ ListNode* solution::mergesortList(ListNode *head){ //no-recursion of linked list
     return res.next;
     
 }
+
+ListNode* solution::quicksortList(ListNode *head)
+{
+    if(head == NULL || head->next == NULL)
+    {
+        return head;
+    }
+    else if(head->next->next == NULL)
+    {
+        if(head->val > head->next->val)
+        {
+            ListNode* ret = head->next;
+            ret->next = head;
+            head->next = NULL;
+            return ret;
+        }
+        else{
+            return head;
+        }
+    }
+    ListNode left(0);
+    ListNode right(0);
+    ListNode *pivot = head;
+    ListNode *tmp = head->next;
+    ListNode *pleft = &left;
+    ListNode *pright = &right;
+    while(tmp)
+    {
+        if(tmp->val <= pivot->val)
+        {
+            pleft->next = tmp;
+            pleft = pleft->next;
+        }
+        else{
+            pright->next = tmp;
+            pright = pright->next;
+        }
+        tmp = tmp->next;
+    }
+    pleft->next = pivot;
+    pivot->next = NULL;
+    pright->next = NULL;
+    pleft = quicksortList(left.next);
+    pright = quicksortList(right.next);
+    left.next = pleft;
+    while(pleft->next)
+    {
+        pleft = pleft->next;
+    }
+    pleft->next = pright;
+    return left.next;
+}
