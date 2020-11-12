@@ -31,7 +31,7 @@ using std::sort;
 using std::set;
 using std::unordered_set;
 using std::abs;
-
+using std::stol;
 int solution::recurMaxPathSum(TreeNode* node){
     if(node == NULL){
         return 0;
@@ -1060,4 +1060,57 @@ int solution::maxPoints(vector<vector<int>> &points)
         count = max(count, tmp + same_point_cnt + 1);
     }
     return count;	
+}
+
+//Don't consider big integer
+int solution::evalRPN(vector<string>& tokens)
+{
+    stack<long> s;
+    long oprand1, oprand2, result;
+    for(string &token : tokens)
+    {
+        if(token == "+")
+        {
+            oprand2 = s.top();
+            s.pop();
+            oprand1 = s.top();
+            s.pop();
+            result = oprand1 + oprand2;
+            s.push(result);
+        }
+        else if(token == "-")
+        {
+            oprand2 = s.top();
+            s.pop();
+            oprand1 = s.top();
+            s.pop();
+            result = oprand1 - oprand2;
+            s.push(result);
+        }
+        else if(token == "*")
+        {
+            oprand2 = s.top();
+            s.pop();
+            oprand1 = s.top();
+            s.pop();
+            result = oprand1 * oprand2;
+            s.push(result);
+        }
+        else if(token == "/")
+        {
+            oprand2 = s.top();
+            s.pop();
+            oprand1 = s.top();
+            s.pop();
+            result = oprand1 / oprand2;
+            s.push(result);
+        }
+        else{
+            long tmp = stol(token);
+            s.push(tmp);
+        }
+    }
+    result = s.top();
+    s.pop();
+    return result;
 }
