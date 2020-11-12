@@ -1,5 +1,6 @@
 #include "solution.h"
 #include <algorithm>
+#include<functional>
 #include <bitset>
 #include <queue>
 #include <map>
@@ -8,6 +9,10 @@
 #include <unordered_map>
 #include <stack>
 #include <utility>
+#include<set>
+#include<unordered_set>
+#include<cmath>
+
 using std::unordered_map;
 using std::map;
 using std::pair;
@@ -22,6 +27,11 @@ using std::stack;
 using std::min;
 using std::max;
 using std::swap;
+using std::sort;
+using std::set;
+using std::unordered_set;
+using std::abs;
+
 int solution::recurMaxPathSum(TreeNode* node){
     if(node == NULL){
         return 0;
@@ -991,4 +1001,63 @@ ListNode* solution::quicksortList(ListNode *head)
     }
     pleft->next = pright;
     return left.next;
+}
+
+unsigned gcd(unsigned a, unsigned b)
+{
+    if(b == 0)
+    {
+        return a;
+    }
+    else
+    {
+        return gcd(b, a % b);
+    }
+}
+
+//naive solution: time: O(n^2), space: O(n)
+int solution::maxPoints(vector<vector<int>> &points)
+{
+    int count = 0;
+    size_t size = points.size();
+    for(int i = 0; i < size; i++)
+    {
+	    map<pair<int,int>, int> numbers;
+	    int cnt = 0;
+	    int same_point_cnt = 0;
+	    int same_vertical_line_cnt = 0;
+	    int same_horizontal_line_cnt = 0;
+	    for(int j = 0; j < size; j++)
+	    {
+            if(i == j)
+            {
+                continue;
+            }
+		    if(points[i][0] == points[j][0] && points[i][1] == points[j][1])
+		    {
+			    same_point_cnt ++;
+		    }
+		    else if(points[i][0] == points[j][0])
+		    {
+			    same_vertical_line_cnt ++;
+		    }
+		    else if(points[i][1] == points[j][1])
+		    {
+			    same_horizontal_line_cnt ++;
+		    }
+		    else
+		    {
+			    int deltax = points[i][0] - points[j][0];
+			    int deltay = points[i][1] - points[j][1];
+			    int g;
+                unsigned abs_deltax = abs(deltax);
+                unsigned abs_deltay = abs(deltay);
+                g = abs_deltax > abs_deltay?gcd(abs_deltax,abs_deltay):gcd(abs_deltay, abs_deltax);
+                cnt = max(cnt, ++numbers[make_pair(deltax/g, deltay/g)]);			    
+		    } 
+	    }
+        int tmp = max(cnt, max(same_vertical_line_cnt, same_horizontal_line_cnt));
+        count = max(count, tmp + same_point_cnt + 1);
+    }
+    return count;	
 }

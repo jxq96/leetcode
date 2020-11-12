@@ -77,6 +77,7 @@ public:
     ListNode *mergesortList_recursion(ListNode *head); // #148
     ListNode *mergesortList(ListNode *head); // #148, non-recursion mergesort list
     ListNode *quicksortList(ListNode *head);
+    int maxPoints(vector<vector<int>>& points); // #149
 };
 
 #endif
