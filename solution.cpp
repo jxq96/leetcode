@@ -1114,3 +1114,42 @@ int solution::evalRPN(vector<string>& tokens)
     s.pop();
     return result;
 }
+
+string solution::reverseWords(string s)
+{
+    stack<string> reverse_stack;
+    auto left = s.begin();
+    auto right = s.begin();
+    while(true)
+    {
+        while(*left == ' ' && left != s.end())
+        {
+            left++;
+        }
+        right = left;
+        while(right != s.end() && *right != ' ')
+        {
+            right++;
+        }
+        if(left != s.end())
+        {
+            reverse_stack.push(string(left,right));
+        }
+        else
+        {
+            break;
+        }
+        left = right;
+    }
+    string result;
+    while(!reverse_stack.empty())
+    {
+        result += reverse_stack.top();
+        reverse_stack.pop();
+        if(!reverse_stack.empty())
+        {
+            result += " ";
+        }
+    }
+    return result;
+}

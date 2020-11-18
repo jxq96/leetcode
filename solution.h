@@ -79,6 +79,7 @@ public:
     ListNode *quicksortList(ListNode *head);
     int maxPoints(vector<vector<int>>& points); // #149
     int evalRPN(vector<string>& tokens); // #150
+    string reverseWords(string s); // #151
 };
 
 #endif
