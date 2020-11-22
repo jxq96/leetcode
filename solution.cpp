@@ -1153,3 +1153,17 @@ string solution::reverseWords(string s)
     }
     return result;
 }
+
+int solution::maxProduct(vector<int>& nums)
+{
+    // assmue nums at least has one element.
+    int tmin = nums[0], tmax = nums[0], ret = nums[0];
+    size_t length = nums.size();
+    for(int i = 1; i < length; i++)
+    {
+        tmax = max(max(tmax*nums[i], tmin*nums[i]), nums[i]);
+        tmin = min(min(tmax*nums[i], tmin*nums[i]), nums[i]);
+        ret = max(ret,tmax);
+    }
+    return ret;
+}

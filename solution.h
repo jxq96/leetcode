@@ -80,6 +80,7 @@ public:
     int maxPoints(vector<vector<int>>& points); // #149
     int evalRPN(vector<string>& tokens); // #150
     string reverseWords(string s); // #151
+    int maxProduct(vector<int>& nums); //#152
 };
 
 #endif
