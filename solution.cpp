@@ -1167,3 +1167,31 @@ int solution::maxProduct(vector<int>& nums)
     }
     return ret;
 }
+
+int solution::findMin(vector<int>& nums)
+{
+    // assume the nums has at least one element
+    size_t len = nums.size();
+    if(nums[len -1] >= nums[0])
+    {
+        return nums[0];
+    }
+    size_t middle = len / 2;
+    int pivot = nums[0];
+    size_t left = 0;
+    size_t right = len;
+    while(middle > 0 && nums[middle] > nums[middle - 1])
+    {
+        if(nums[middle] > pivot)
+        {
+            left = middle;
+            middle = (left + right)/2;
+        }
+        else
+        {
+            right = middle;
+            middle = (left + right)/2;
+        }
+    }
+    return nums[middle];
+}

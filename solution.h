@@ -81,6 +81,7 @@ public:
     int evalRPN(vector<string>& tokens); // #150
     string reverseWords(string s); // #151
     int maxProduct(vector<int>& nums); //#152
+    int findMin(vector<int>& nums); // #153
 };
 
 #endif
