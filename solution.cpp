@@ -1195,3 +1195,81 @@ int solution::findMin(vector<int>& nums)
     }
     return nums[middle];
 }
+
+int solution::findMin2(vector<int> &nums)
+{
+//  这个版本的代码过了，还很快，但是思路比较乱， 下面再给一个思路清晰的版本
+    int pivot = 0, pivotval;
+    size_t len = nums.size();
+    if(nums[0] < nums[len - 1])
+    {
+        return nums[0];
+    }
+    else if(nums[0] == nums[len - 1])
+    {
+        int tmp = nums[len - 1];
+        while(nums[pivot] == nums[len-1] && pivot < len - 1)
+        {
+            pivot ++;
+        }
+        if(pivot == len - 1)
+        {
+            return nums[0];
+        }
+    }
+    int left = pivot, right = len - 1;
+    int middle = (left + right) / 2;
+    pivotval = nums[pivot];
+    if(pivotval < nums[len - 1])
+    {
+        return pivotval;
+    }
+    while(middle > pivot && nums[middle] >= nums[middle - 1])
+    {
+        if(middle < len -1 && nums[middle] > nums[middle+1])
+        {
+            break;
+        }
+        if(nums[middle] >= pivotval)
+        {
+            left = middle;
+            middle = (left + right)/2;
+        }
+        else
+        {
+            right = middle;
+            middle = (left + right)/2;
+        }
+    }
+    return min(nums[middle],nums[middle+1]);
+}
+
+int findMin2_refine(vector<int>& nums)
+{
+    int left = 0, right = nums.size() - 1;
+    int middle;
+    if(nums[left] < nums[right])
+    {
+        return nums[left];
+    }
+    while(left < right)
+    {
+        if(nums[left] < nums[right])
+        {
+            return nums[left];
+        }
+        middle = (left + right) / 2;
+        if(nums[middle] > nums[left])
+        {
+            left = middle + 1;
+        }
+        else if(nums[middle] < nums[left])
+        {
+            right = middle;
+        }
+        else{
+            left++;
+        }
+    }
+    return nums[left];
+}
