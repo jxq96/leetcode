@@ -1273,3 +1273,50 @@ int findMin2_refine(vector<int>& nums)
     }
     return nums[left];
 }
+
+ListNode* solution::getIntersectionNode(ListNode *headA, ListNode *headB)
+{
+    unsigned long lenA = 0, lenB = 0;
+    int gap;
+    ListNode* tmpA = headA, *tmpB = headB;
+    while(tmpA)
+    {
+        lenA ++;
+        tmpA = tmpA->next;
+    }
+    while(tmpB)
+    {
+        lenB ++;
+        tmpB = tmpB->next;
+    }
+    if(lenB > lenA)
+    {
+        gap = lenB - lenA;
+        tmpB = headB;
+        tmpA = headA;
+        while(gap)
+        {
+            tmpB = tmpB->next;
+            gap --;
+        }
+    }
+    else
+    {
+        gap = lenA - lenB;
+        tmpA = headA;
+        tmpB = headB;
+        while(gap)
+        {
+            tmpA = tmpA->next;
+            gap --;
+        }
+    }
+    while(tmpA != tmpB && tmpB && tmpA)
+    {
+        tmpA = tmpA->next;
+        tmpB = tmpB->next;
+    }
+    return tmpA;
+
+    
+}

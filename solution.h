@@ -83,6 +83,7 @@ public:
     int maxProduct(vector<int>& nums); //#152
     int findMin(vector<int>& nums); // #153
     int findMin2(vector<int>& nums); //#154, allow duplicated elements in the array
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB); // #160
 };
 
 #endif
