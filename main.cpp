@@ -3,6 +3,6 @@
 using namespace std;
 int main(){
     solution sol;
-    vector<int> nums = {10,1,10,10,10};
-    cout << sol.findMin2(nums) << endl;
+    vector<int> nums = {1,2,3,4,5,4};
+    cout << sol.findPeakElement(nums)<< endl;
 }

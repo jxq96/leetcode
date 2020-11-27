@@ -1320,3 +1320,74 @@ ListNode* solution::getIntersectionNode(ListNode *headA, ListNode *headB)
 
     
 }
+
+int solution::findPeakElement(vector<int> &nums)
+{
+    size_t len = nums.size();
+    if(len == 1)
+    {
+        return 0;
+    }
+    else
+    {
+        if(nums[0]>nums[1])
+        {
+            return 0;
+        }
+        if(nums[len - 1] > nums[len - 2])
+        {
+            return len - 1;
+        }
+        int middle, middlel, middler;
+        int left = 0, right = len - 1;
+        middle = (left + right)/2;
+        while(middle > 0 && left < right && (nums[middle] < nums[middle - 1] || nums[middle] < nums[middle+1]))
+        {
+            middlel = (left + middle)/2;
+            middler = (right + middle)/2;
+            if(nums[middlel] > nums[left] && nums[middlel] > nums[middle])
+            {
+                right = middle;
+                middle = (left + right) / 2;
+                continue;
+            }
+            else if(nums[middler] > nums[right] && nums[middler] > nums[middle])
+            {
+                left = middle;
+                middle = (left + right) / 2;
+                continue;
+            }
+            else{
+                int tmp = left + 1;
+                bool flag = false;
+                while(tmp <= middle)
+                {
+                    if(nums[tmp] > nums[left] && nums[tmp] > nums[middle])
+                    {
+                        right = middle;
+                        middle = (left + right)/2;
+                        flag = true;
+                        break;
+                    }
+                    tmp ++;
+                }
+                if(flag)
+                {
+                    continue;
+                }
+                tmp = right - 1;
+                while(tmp >= middle)
+                {
+                    if(nums[tmp] > nums[right] && nums[tmp] > nums[middle])
+                    {
+                        left = middle;
+                        middle = (left + right)/2;
+                        break;
+                    }
+                    tmp --;
+                }
+            }
+        }
+        return middle;
+    }
+}
