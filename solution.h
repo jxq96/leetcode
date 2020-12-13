@@ -85,6 +85,7 @@ public:
     int findMin2(vector<int>& nums); //#154, allow duplicated elements in the array
     ListNode *getIntersectionNode(ListNode *headA, ListNode *headB); // #160
     int findPeakElement(vector<int>& nums); //#162
+    int maximumGap(vector<int>& nums); // #164
 };
 
 #endif
