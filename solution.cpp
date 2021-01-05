@@ -12,6 +12,7 @@
 #include<set>
 #include<unordered_set>
 #include<cmath>
+#include<cstdlib>
 
 using std::unordered_map;
 using std::map;
@@ -1432,4 +1433,63 @@ int solution::maximumGap(vector<int> &nums)
         ret = max(ret, nums[i]-nums[i-1]);
     }
     return ret;
+}
+
+int solution::compareVersion(string version1, string version2)
+{
+    const char *left1, *left2;
+    const char *s1 = version1.c_str();
+    const char *s2 = version2.c_str();
+    long l1, l2;
+    char *tmp1, *tmp2;
+    left1 = s1;
+    left2 = s2;
+    while(*left1 && *left2)
+    {
+        l1 = strtol(left1, &tmp1, 10);
+        l2 = strtol(left2, &tmp2, 10);
+        if(*tmp1)
+        {
+            left1 = ++tmp1;
+        }
+        else
+        {
+            left1 = tmp1;
+        }
+        if(*tmp2)
+        {
+            left2 = ++tmp2;
+        }
+        else
+        {
+            left2 = tmp2;
+        }
+        if(l1 == l2)
+        {
+            continue;
+        }
+        return l1>l2?1:-1;
+    }
+    if(!(*left1) && !(*left2))
+    {
+        return 0;
+    }
+    while (*left1)
+    {
+        if(*left1 != '0' && *left1 != '.')
+        {
+            return 1;
+        }
+        left1 ++;
+    }
+    while(*left2)
+    {
+        if(*left2 != '0' && *left2 != '.')
+        {
+            return -1;
+        }
+        left2 ++;
+    }
+    return 0;
+    
 }

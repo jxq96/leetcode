@@ -86,6 +86,7 @@ public:
     ListNode *getIntersectionNode(ListNode *headA, ListNode *headB); // #160
     int findPeakElement(vector<int>& nums); //#162
     int maximumGap(vector<int>& nums); // #164
+    int compareVersion(string version1, string version2); // #165
 };
 
 #endif
