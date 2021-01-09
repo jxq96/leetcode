@@ -88,6 +88,7 @@ public:
     int maximumGap(vector<int>& nums); // #164
     int compareVersion(string version1, string version2); // #165
     string fractionToDecimal(int numerator, int dominator); // #166
+    vector<int> twoSum(vector<int>& numbers, int target); // #166
 };
 
 #endif

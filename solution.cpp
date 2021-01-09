@@ -1536,3 +1536,24 @@ string solution::fractionToDecimal(int numerator, int denominator)
     }
     return ret;
 }
+
+vector<int> solution::twoSum(vector<int> &numbers, int target)
+{
+    int left = 0, right = numbers.size() - 1;
+    int sum;
+    while((sum = numbers[left] + numbers[right]) != target)
+    {
+        if(sum < target)
+        {
+            left ++;
+        }
+        else
+        {
+            right --;
+        }
+    }
+    vector<int> ret;
+    ret.push_back(++left);
+    ret.push_back(++right);
+    return ret;
+}
