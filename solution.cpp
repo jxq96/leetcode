@@ -35,6 +35,7 @@ using std::unordered_set;
 using std::abs;
 using std::stol;
 using std::copy;
+using std::to_string;
 int solution::recurMaxPathSum(TreeNode* node){
     if(node == NULL){
         return 0;
@@ -1492,4 +1493,46 @@ int solution::compareVersion(string version1, string version2)
     }
     return 0;
     
+}
+
+string solution::fractionToDecimal(int numerator, int denominator)
+{
+    string ret;
+    if(numerator == 0)
+    {
+        return string("0");
+    }
+    if((numerator < 0) ^ (denominator < 0))
+    {
+        ret.push_back('-');
+    }
+    long num = (long)(numerator);
+    long dom = (long)denominator;
+    num = num < 0?-num:num;
+    dom = dom < 0?-dom:dom;
+    unordered_map<int,int> remain_location;
+    long remainder;
+    ret += to_string(num/dom);
+    remainder = num % dom;
+    if(remainder == 0)
+    {
+        return ret;
+    }
+    ret.push_back('.');
+    while(remainder != 0)
+    {
+        if(remain_location.count(remainder) != 0)
+        {
+            ret = ret.substr(0, remain_location[remainder]) + "(" + ret.substr(remain_location[remainder]) + ")";
+            break;
+        }
+        else
+        {
+            remain_location[remainder] = ret.size();
+            remainder *= 10;
+            ret += to_string(remainder / dom);
+            remainder %= dom;
+        }
+    }
+    return ret;
 }

@@ -3,7 +3,7 @@
 using namespace std;
 int main(){
     solution sol;
-    string s1 = "1.0";
-    string s2 = "1.0.0";
-    auto ret = sol.compareVersion(s1, s2);
+    int a = 1, b = 2, c = 1, d = 3;
+    cout << sol.fractionToDecimal(a, b) << endl;
+    cout << sol.fractionToDecimal(c, d) << endl;
 }
