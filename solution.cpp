@@ -36,6 +36,7 @@ using std::abs;
 using std::stol;
 using std::copy;
 using std::to_string;
+using std::reverse;
 int solution::recurMaxPathSum(TreeNode* node){
     if(node == NULL){
         return 0;
@@ -1555,5 +1556,56 @@ vector<int> solution::twoSum(vector<int> &numbers, int target)
     vector<int> ret;
     ret.push_back(++left);
     ret.push_back(++right);
+    return ret;
+}
+
+string solution::convertToTitle(int n)
+{
+    string ret;
+    while(n > 0)
+    {
+        n -= 1;
+        ret.push_back( n % 26 + 'A');
+        n /= 26;
+    }
+    reverse(ret.begin(),ret.end());
+    return ret;
+}
+
+int solution::majorityElement(vector<int>& nums)
+{
+    int ret = nums[0];
+    int count = 1;
+    size_t size = nums.size();
+    for(int i = 1; i < size; i++)
+    {
+        if(count == 0)
+        {
+            ret = nums[i];
+            count = 1;
+            continue;
+        }
+        if(nums[i] == ret)
+        {
+            count ++;
+        }
+        else
+        {
+            count --;
+        }
+
+        
+    }
+    return ret;
+}
+
+int solution::titleToNumber(string s)
+{
+    int ret = 0;
+    for(char c : s)
+    {
+        int t = c - 'A' + 1;
+        ret = ret * 26 + t;
+    }
     return ret;
 }

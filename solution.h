@@ -89,6 +89,9 @@ public:
     int compareVersion(string version1, string version2); // #165
     string fractionToDecimal(int numerator, int dominator); // #166
     vector<int> twoSum(vector<int>& numbers, int target); // #166
+    string convertToTitle(int n); // # 167
+    int majorityElement(vector<int>& nums); //# 168
+    int titleToNumber(string s); // #171
 };
 
 #endif
