@@ -92,6 +92,8 @@ public:
     string convertToTitle(int n); // # 167
     int majorityElement(vector<int>& nums); //# 168
     int titleToNumber(string s); // #171
+    int trailingZeroes(int n); // #172
+    int calculateMinimumHP(vector<vector<int>>& dungeon); // #174
 };
 
 #endif

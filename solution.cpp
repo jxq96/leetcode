@@ -1609,3 +1609,44 @@ int solution::titleToNumber(string s)
     }
     return ret;
 }
+
+int solution::trailingZeroes(int n)
+{
+    int order2, order5;
+    order2 = order5 = 0;
+    int i = 2;
+    int t;
+    while( ( t = n / i) > 0)
+    {
+        order2 += t;
+        i *= 2;
+    }
+    i = 5;
+    while( (t = n / i) > 0)
+    {
+        order5 += t;
+        i *= 5;
+    }
+    return order2 < order5 ? order2 : order5;
+}
+
+int solution::calculateMinimumHP(vector<vector<int>>& dungeon)
+{
+    if(dungeon.size() == 0 || dungeon[0].size() == 0)
+    {
+        return 0;
+    }
+    size_t rows = dungeon.size();
+    size_t columns = dungeon[0].size();
+    vector<vector<int>> dp(rows+1, vector<int>(columns + 1,INT32_MAX)); 
+    dp[rows-1][columns] = dp[rows][columns-1] = 1;
+    for(ssize_t i = rows - 1; i >= 0; i--)
+    {
+        for(ssize_t j = columns - 1; j >= 0; j--)
+        {
+            int minn = min(dp[i+1][j], dp[i][j+1]);
+            dp[i][j] = max(minn - dungeon[i][j], 1);
+        }
+    }
+    return dp[0][0];
+}
