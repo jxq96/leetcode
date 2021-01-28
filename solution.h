@@ -94,6 +94,7 @@ public:
     int titleToNumber(string s); // #171
     int trailingZeroes(int n); // #172
     int calculateMinimumHP(vector<vector<int>>& dungeon); // #174
+    string largestNumber(vector<int>& nums); // #179
 };
 
 #endif

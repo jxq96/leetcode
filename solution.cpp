@@ -1650,3 +1650,35 @@ int solution::calculateMinimumHP(vector<vector<int>>& dungeon)
     }
     return dp[0][0];
 }
+
+string solution::largestNumber(vector<int>& nums)
+{
+    vector<string> snums;
+    for(int entry : nums)
+    {
+        snums.push_back(to_string(entry));
+    }
+    sort(snums.begin(), snums.end(), [](const string & a, const string & b)
+    {
+        string t1 = a + b;
+        string t2 = b + a;
+        if(t1 >= t2)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    });
+    string ret;
+    for(auto i = snums.rbegin(); i != snums.rend(); i++)
+    {
+        ret += *i;
+    }
+    if(ret.size() > 1 && ret[0] == '0')
+    {
+        return "0";
+    }
+    return ret;
+}
