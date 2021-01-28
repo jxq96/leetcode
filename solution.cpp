@@ -1682,3 +1682,37 @@ string solution::largestNumber(vector<int>& nums)
     }
     return ret;
 }
+
+vector<string> solution::findRepeatedDnaSequences(string s)
+{
+    vector<string> ret;
+    if(s.size() <= 10)
+    {
+        return ret;
+    }
+    auto i = s.begin();
+    auto j = i + 10;
+    unordered_map<string,int> hash;
+    while(j <= s.end())
+    {
+        string tmp = string(i, j);
+        if(hash.count(tmp) == 0)
+        {
+            hash[tmp] = 1;
+        }
+        else
+        {
+            hash[tmp] ++;
+        }
+        i ++;
+        j ++;
+    }
+    for(auto entry : hash)
+    {
+        if(entry.second > 1)
+        {
+            ret.push_back(entry.first);
+        }
+    }
+    return ret;
+}

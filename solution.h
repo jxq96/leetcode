@@ -95,6 +95,7 @@ public:
     int trailingZeroes(int n); // #172
     int calculateMinimumHP(vector<vector<int>>& dungeon); // #174
     string largestNumber(vector<int>& nums); // #179
+    vector<string> findRepeatedDnaSequences(string s); // #187
 };
 
 #endif
