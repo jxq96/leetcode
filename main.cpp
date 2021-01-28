@@ -3,7 +3,7 @@
 using namespace std;
 int main(){
     solution sol;
-    string s = "AAAAAAAAAAA";
-    auto ret = sol.findRepeatedDnaSequences(s);
-
+    uint32_t n = 4294967293;
+    auto ret = sol.reverseBits(n);
+    cout << ret << endl;
 }

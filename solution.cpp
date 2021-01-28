@@ -1736,3 +1736,24 @@ void solution::rotate(vector<int>& nums, int k)
     reverse(nums, 0, k - 1);
     reverse(nums, k, nums.size() - 1);
 }
+
+uint32_t solution::reverseBits(uint32_t n)
+{
+    uint32_t ret = 0;
+    int count = 31;
+    while(count > 0)
+    {
+        if(n & 1)
+        {
+            ret |= 1;
+        }
+        ret <<= 1;
+        n >>= 1;
+        count --;
+    }
+    if(n & 1)
+    {
+        ret |= 1;
+    }
+    return ret;
+}

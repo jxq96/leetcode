@@ -97,6 +97,7 @@ public:
     string largestNumber(vector<int>& nums); // #179
     vector<string> findRepeatedDnaSequences(string s); // #187
     void rotate(vector<int>& nums, int k); // #189
+    uint32_t reverseBits(uint32_t n); // #190
 };
 
 #endif
