@@ -98,6 +98,9 @@ public:
     vector<string> findRepeatedDnaSequences(string s); // #187
     void rotate(vector<int>& nums, int k); // #189
     uint32_t reverseBits(uint32_t n); // #190
+    int hammingWeight(uint32_t n); // #191
+    int rob(vector<int>& nums); //#198
+    vector<int> rightSideView(TreeNode* root); // #199
 };
 
 #endif

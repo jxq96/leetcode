@@ -1757,3 +1757,69 @@ uint32_t solution::reverseBits(uint32_t n)
     }
     return ret;
 }
+
+int solution::hammingWeight(uint32_t n)
+{
+    int ret = 0;
+    while(n)
+    {
+        n &= (n-1);
+        ret ++;
+    }
+    return ret;
+}
+
+int solution::rob(vector<int>& nums)
+{
+    size_t size = nums.size();
+    if(size == 0)
+    {
+        return 0;
+    }
+    if(size == 1)
+    {
+        return nums[0];
+    }
+    int first, second;
+    first = nums[0];
+    second = max(nums[0],nums[1]);
+    for(size_t i = 2; i < size; i++)
+    {
+        int tmp = second;
+        second = max(nums[i] + first, second);
+        first = tmp;
+    }
+    return second;
+}
+
+vector<int> solution::rightSideView(TreeNode *root)
+{
+    vector<int> ret;
+    queue<TreeNode*> level_queue;
+    if(root == NULL)
+    {
+        return ret;
+    }
+    level_queue.push(root);
+    while(!level_queue.empty())
+    {
+        size_t size = level_queue.size();
+        ret.push_back(level_queue.front()->val);
+        for(int i = 0; i < size; i ++)
+        {
+            auto tmp = level_queue.front();
+            level_queue.pop();
+            if(tmp->right)
+            {
+                level_queue.push(tmp->right);
+            }
+            if(tmp->left)
+            {
+                level_queue.push(tmp->left);
+            }
+
+        }
+    }
+    return ret;
+
+}
