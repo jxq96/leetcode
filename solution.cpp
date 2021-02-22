@@ -1823,3 +1823,93 @@ vector<int> solution::rightSideView(TreeNode *root)
     return ret;
 
 }
+
+struct island_set_node{
+    struct island_set_node* parent;
+    int rank;
+};
+
+void island_union(struct island_set_node* a, struct island_set_node* b)
+{
+    if(a->rank > b->rank)
+    {
+        b->parent = a;
+    }
+    else
+    {
+        a->parent = b;
+        if(a->rank == b->rank)
+        {
+            b->rank ++;
+        }
+    }
+}
+
+struct island_set_node* find_set(struct island_set_node* x)
+{
+    if(x != x->parent)
+    {
+        x->parent = find_set(x->parent);
+    }
+    return x->parent;
+}
+
+int solution::numIslands(vector<vector<char>>& grid)
+{
+    int row = grid.size();
+    if(row == 0)
+    {
+        return 0;
+    }
+    int column = grid[0].size();
+    if(column == 0)
+    {
+        return 0;
+    }
+    struct island_set_node nodes[row][column];
+    for(int i = 0; i < row; i++)
+    {
+        for(int j = 0; j < column; j ++)
+        {
+            if(grid[i][j] == '1')
+            {
+                nodes[i][j].rank = 0;
+                nodes[i][j].parent = &nodes[i][j];
+                if(i > 0)
+                {
+                    if(grid[i-1][j] == '1')
+                    {
+                        island_union(find_set(&nodes[i][j]), find_set(&nodes[i-1][j]));
+                    }
+                }
+                if(j > 0)
+                {
+                    if(grid[i][j-1] == '1')
+                    {
+                        island_union(find_set(&nodes[i][j]), find_set(&nodes[i][j-1]));
+                    }
+                }
+            }
+            else{
+                nodes[i][j].rank = -1;
+            }
+
+        }
+    }
+    unordered_set<struct island_set_node*> sets;
+    for(int i = 0; i < row; i ++)
+    {
+        for(int j = 0; j < column; j++)
+        {
+            if(nodes[i][j].rank != -1)
+            {
+                if(sets.count(find_set(&nodes[i][j])) == 0)
+                {
+                    sets.insert(find_set(&nodes[i][j]));
+                }
+            }
+        }
+    }
+    int ret = sets.size();
+    return ret;
+}

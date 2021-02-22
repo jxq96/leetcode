@@ -101,6 +101,7 @@ public:
     int hammingWeight(uint32_t n); // #191
     int rob(vector<int>& nums); //#198
     vector<int> rightSideView(TreeNode* root); // #199
+    int numIslands(vector<vector<char>>& grid); // #200
 };
 
 #endif
