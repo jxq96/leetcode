@@ -1,6 +1,6 @@
 #include "solution.h"
 #include <algorithm>
-#include<functional>
+#include <functional>
 #include <bitset>
 #include <queue>
 #include <map>
@@ -9,11 +9,11 @@
 #include <unordered_map>
 #include <stack>
 #include <utility>
-#include<set>
-#include<unordered_set>
-#include<cmath>
-#include<cstdlib>
-
+#include <set>
+#include <unordered_set>
+#include <cmath>
+#include <cstdlib>
+#include <numeric>
 using std::unordered_map;
 using std::map;
 using std::pair;
@@ -37,6 +37,7 @@ using std::stol;
 using std::copy;
 using std::to_string;
 using std::reverse;
+using std::accumulate;
 int solution::recurMaxPathSum(TreeNode* node){
     if(node == NULL){
         return 0;
@@ -1946,4 +1947,49 @@ bool solution::isHappy(int n)
         n = m;
     } 
     return true;
+}
+
+ListNode* solution::removeElements(ListNode* head, int val)
+{
+    ListNode* ret = head;
+    while(ret && ret->val == val)
+    {
+        ret = ret->next;
+    }
+    ListNode* tmp = ret;
+    if(!tmp)
+    {
+        return ret;
+    }
+    while(tmp->next)
+    {
+        if(tmp->next->val == val)
+        {
+            tmp->next = tmp->next->next;
+            continue;
+        }
+        tmp = tmp->next;
+    }
+    return ret;
+}
+
+int solution::countPrimes(int n)
+{
+    if(n <= 2)
+    {
+        return 0;
+    }
+    vector<char> is_prime(n, 1);
+    is_prime[0] = is_prime[1] = 0;
+    for(int i = 2; i*i < n; i ++)
+    {
+        if(is_prime[i])
+        {
+            for(int j = i*i; j < n; j += i)
+            {
+                is_prime[j] = 0;
+            }
+        }
+    }
+    return accumulate(is_prime.begin(), is_prime.end(), 0);
 }

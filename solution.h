@@ -104,6 +104,8 @@ public:
     int numIslands(vector<vector<char>>& grid); // #200
     int rangeBitwiseAnd(int m, int n); //#201
     bool isHappy(int n); //# 202
+    ListNode* removeElements(ListNode* head, int val); // #203
+    int countPrimes(int n); // #204
 };
 
 #endif
