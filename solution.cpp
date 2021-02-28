@@ -1922,3 +1922,28 @@ int solution::rangeBitwiseAnd(int m, int n)
     }
     return n;
 }
+
+bool solution::isHappy(int n)
+{
+    int r, m;
+    unordered_set<int> present_numbers;
+    present_numbers.insert(n);
+    m = 0;
+    while(m != 1)
+    {
+        if(present_numbers.find(m) != present_numbers.end())
+        {
+            return false;
+        }
+        present_numbers.insert(m);
+        m = 0;
+        while(n)
+        {
+            r = n % 10;
+            m += r*r;
+            n /= 10;
+        }
+        n = m;
+    } 
+    return true;
+}
