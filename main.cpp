@@ -3,11 +3,8 @@
 using namespace std;
 int main(){
     solution sol;
-    vector<vector<char>> grid;
-    grid.push_back(vector<char>{'1','1','0','0','0'});
-    grid.push_back(vector<char>{'1','1','0','0','0'});
-    grid.push_back(vector<char>{'0','0','1','0','0'});
-    grid.push_back(vector<char>{'0','0','0','1','1'});
-    int ret = sol.numIslands(grid);
+    int m = 1;
+    int n = 2;
+    int ret = sol.rangeBitwiseAnd(m, n);
     cout << ret << endl;
 }

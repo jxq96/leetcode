@@ -102,6 +102,7 @@ public:
     int rob(vector<int>& nums); //#198
     vector<int> rightSideView(TreeNode* root); // #199
     int numIslands(vector<vector<char>>& grid); // #200
+    int rangeBitwiseAnd(int m, int n); //#201
 };
 
 #endif

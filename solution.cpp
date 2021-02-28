@@ -1913,3 +1913,12 @@ int solution::numIslands(vector<vector<char>>& grid)
     int ret = sets.size();
     return ret;
 }
+
+int solution::rangeBitwiseAnd(int m, int n)
+{
+    while(m < n)
+    {
+        n &= (n-1);
+    }
+    return n;
+}
