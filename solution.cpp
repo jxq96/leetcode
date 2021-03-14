@@ -38,6 +38,7 @@ using std::copy;
 using std::to_string;
 using std::reverse;
 using std::accumulate;
+using std::list;
 int solution::recurMaxPathSum(TreeNode* node){
     if(node == NULL){
         return 0;
@@ -1992,4 +1993,86 @@ int solution::countPrimes(int n)
         }
     }
     return accumulate(is_prime.begin(), is_prime.end(), 0);
+}
+
+int solution::superEggDrop(int K, int N)
+{
+    //FIXME: not implement
+    return 0;
+}
+
+bool solution::isIsomorphic(string s, string t)
+{
+    unordered_map<char,char> mapping;
+    unordered_set<char> existed_value;
+    if(s.length() != t.length())
+    {
+        return false;
+    }
+    size_t len = s.length();
+    for(size_t i = 0; i <len; i++)
+    {
+        if(mapping.count(s[i]) != 0)
+        {
+            if(mapping[s[i]] != t[i])
+            {
+                return false;
+            }
+        }
+        else
+        {
+            if(existed_value.count(t[i]) != 0)
+            {
+                return false;
+            }
+            else
+            {
+                mapping[s[i]] = t[i];
+                existed_value.insert(t[i]);
+            }
+        }
+    }
+    return true;
+}
+
+bool solution::canFinish(int numCourses, vector<vector<int>>& prerequisites)
+{
+    vector<int> in_degree(numCourses, 0);
+    // int out_degre[numCourses] = {0};
+    int count = 0;
+    // bool sorted[numCourses] = {false};
+    list<int> * adjacent_list = new list<int>[numCourses];
+    for(auto prerequisite : prerequisites)
+    {
+        //prerequisite[1] before prerequisite[0]
+        // out_degre[prerequisite[1]] ++;
+        in_degree[prerequisite[0]] ++;
+        adjacent_list[prerequisite[1]].push_back(prerequisite[0]);
+    }
+    int i;
+    while(true)
+    {
+        for(i = 0; i < numCourses; i++)
+        {
+            if(in_degree[i] == 0)
+            {
+                break;
+            }
+        }
+        if(i == numCourses)
+        {
+            break;
+        }
+        in_degree[i] = -1;
+        for(auto adjacent: adjacent_list[i])
+        {
+            in_degree[adjacent] --;
+        }
+        count ++;
+    }
+    if(count == numCourses)
+    {
+        return true;
+    }
+    return false;
 }

@@ -106,6 +106,9 @@ public:
     bool isHappy(int n); //# 202
     ListNode* removeElements(ListNode* head, int val); // #203
     int countPrimes(int n); // #204
+    int superEggDrop(int K, int N); // #887
+    bool isIsomorphic(string s, string t); // # 205
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites); // #207
 };
 
 #endif
