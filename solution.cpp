@@ -2076,3 +2076,78 @@ bool solution::canFinish(int numCourses, vector<vector<int>>& prerequisites)
     }
     return false;
 }
+
+class Trie {
+public:
+    /** Initialize your data structure here. */
+    Trie() {
+        for(int i = 0; i < 26; i++)
+        {
+            this->link[i] = nullptr;
+        }
+        this->flag = false;
+    }
+    
+    /** Inserts a word into the trie. */
+    void insert(string word) {
+        bool ret = this->search(word);
+        if(ret)
+        {
+            return;
+        }
+        else
+        {
+            Trie* t = this;
+            for(char c : word)
+            {
+                c -= 'a';
+                if(t->link[c] == nullptr)
+                {
+                    t->link[c] = new Trie();
+                }
+                t = t->link[c];
+            }
+            t->flag = true;
+        }
+    }
+    
+    /** Returns if the word is in the trie. */
+    bool search(string word) {
+        Trie* t = this;
+        for(char c: word)
+        {
+            c -= 'a';
+            if(t->link[c] == nullptr)
+            {
+                return false;
+            }
+            else
+            {
+                t = t->link[c];
+            }
+        }
+        return t->flag;
+    }
+    
+    /** Returns if there is any word in the trie that starts with the given prefix. */
+    bool startsWith(string prefix) {
+        Trie* t = this;
+        for(char c : prefix)
+        {
+            c -= 'a';
+            if(t->link[c] == nullptr)
+            {
+                return false;
+            }
+            else
+            {
+                t = t->link[c];
+            }
+        }
+        return true;
+
+    }
+private:
+    Trie* link[26];
+    bool flag;
+};
