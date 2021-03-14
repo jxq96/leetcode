@@ -2151,3 +2151,50 @@ private:
     Trie* link[26];
     bool flag;
 };
+
+int solution::minSubArrayLen(int target, vector<int>& nums)
+{
+    if(nums.size() == 0)
+    {
+        return 0;
+    }
+    int start, end;
+    start = end = 0;
+    int len = nums.size();
+    int sum = 0;
+    int min_now = INT32_MAX;
+    for(int i = 0; i < len; i++)
+    {
+        if(sum < target)
+        {
+            sum += nums[i];
+            end = i;
+        }
+        else
+        {
+            if(end - start + 1 < min_now)
+            {
+                min_now = end - start + 1;
+            }
+            sum += nums[i];
+            end = i;
+            while((sum - nums[start]) >= target)
+            {
+                sum -= nums[start++];
+            }
+        }
+    }
+    while((sum - nums[start]) >= target)
+    {
+        sum -= nums[start++];
+    }
+    if(end - start + 1 < min_now && sum >= target)
+    {
+        min_now = end - start + 1;
+    }
+    if(min_now == INT32_MAX)
+    {
+        return 0;
+    }
+    return min_now;
+}

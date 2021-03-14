@@ -109,6 +109,7 @@ public:
     int superEggDrop(int K, int N); // #887
     bool isIsomorphic(string s, string t); // # 205
     bool canFinish(int numCourses, vector<vector<int>>& prerequisites); // #207
+    int minSubArrayLen(int target, vector<int>& nums); // #209
 };
 
 #endif
