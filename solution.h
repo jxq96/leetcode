@@ -111,6 +111,7 @@ public:
     bool canFinish(int numCourses, vector<vector<int>>& prerequisites); // #207
     int minSubArrayLen(int target, vector<int>& nums); // #209
     vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites); // #210
+    vector<string> findWords(vector<vector<char>>& board, vector<string>& words); // #212
 };
 
 #endif

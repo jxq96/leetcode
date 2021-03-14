@@ -14,68 +14,78 @@
 #include <cmath>
 #include <cstdlib>
 #include <numeric>
-using std::unordered_map;
-using std::map;
-using std::pair;
+using std::abs;
+using std::accumulate;
 using std::bitset;
-using std::queue;
-using std::make_pair;
+using std::copy;
 using std::find;
-using std::unordered_set;
+using std::list;
+using std::make_pair;
+using std::map;
+using std::max;
+using std::max_element;
+using std::min;
 using std::min_element;
 using std::minmax_element;
-using std::max_element;
-using std::stack;
-using std::min;
-using std::max;
-using std::swap;
-using std::sort;
-using std::set;
-using std::unordered_set;
-using std::abs;
-using std::stol;
-using std::copy;
-using std::to_string;
+using std::pair;
+using std::queue;
 using std::reverse;
-using std::accumulate;
-using std::list;
-int solution::recurMaxPathSum(TreeNode* node){
-    if(node == NULL){
+using std::set;
+using std::sort;
+using std::stack;
+using std::stol;
+using std::swap;
+using std::to_string;
+using std::unordered_map;
+using std::unordered_set;
+int solution::recurMaxPathSum(TreeNode *node)
+{
+    if (node == NULL)
+    {
         return 0;
     }
     int maxLeft = recurMaxPathSum(node->left);
     int maxRight = recurMaxPathSum(node->right);
-    maxPathSumReturn = std::max(maxPathSumReturn, std::max(0,maxLeft)+std::max(0,maxRight) + node->val);
-    return std::max(0,std::max(maxLeft,maxRight)+node->val);
+    maxPathSumReturn = std::max(maxPathSumReturn, std::max(0, maxLeft) + std::max(0, maxRight) + node->val);
+    return std::max(0, std::max(maxLeft, maxRight) + node->val);
 }
-int solution::maxPathSum(TreeNode* root){ //  #124
+int solution::maxPathSum(TreeNode *root)
+{ //  #124
     maxPathSumReturn = -100000;
     recurMaxPathSum(root);
     return maxPathSumReturn;
 }
 
-bool solution::isPalindrome(string s){
+bool solution::isPalindrome(string s)
+{
     int len = s.size();
     int left = 0;
     int right = len - 1;
     int step = 'a' - 'A';
-    while(left <= right){
-        while(!isalnum(s[left]) && left <= right){
+    while (left <= right)
+    {
+        while (!isalnum(s[left]) && left <= right)
+        {
             left++;
         }
-        while(!isalnum(s[right]) && left <= right){
+        while (!isalnum(s[right]) && left <= right)
+        {
             right--;
         }
-        if(left >right){
+        if (left > right)
+        {
             return true;
         }
-        if(isupper(s[left])){
+        if (isupper(s[left]))
+        {
             s[left] += step;
         }
-        if(isupper(s[right])){
+        if (isupper(s[right]))
+        {
             s[right] += step;
         }
-        if(s[left] == s[right]){
+        if (s[left] == s[right])
+        {
             left++;
             right--;
             continue;
@@ -85,33 +95,39 @@ bool solution::isPalindrome(string s){
     return true;
 }
 
-
-
-int distance(string& a, string&b){
+int distance(string &a, string &b)
+{
     int len = a.size();
     int res = 0;
-    for(int i = 0; i < len; i++){
-        if(a[i] != b[i]){
-            res ++;
+    for (int i = 0; i < len; i++)
+    {
+        if (a[i] != b[i])
+        {
+            res++;
         }
     }
     return res;
 }
-int ladderLengthRecur(string beginWord, string endWord, vector<string>& wordList, vector<bool>& bitmap){
+int ladderLengthRecur(string beginWord, string endWord, vector<string> &wordList, vector<bool> &bitmap)
+{
     int min = INT32_MAX;
-    if(beginWord == endWord){
+    if (beginWord == endWord)
+    {
         return 0;
     }
     int size = wordList.size();
     int i = 0;
-    for(i = 0; i < size; i++){
-        if(bitmap[i] && distance(beginWord, wordList[i]) == 1){
-           bitmap[i] = false;
-           min = std::min(min, ladderLengthRecur(wordList[i],endWord,wordList,bitmap));
-           bitmap[i] = true; 
+    for (i = 0; i < size; i++)
+    {
+        if (bitmap[i] && distance(beginWord, wordList[i]) == 1)
+        {
+            bitmap[i] = false;
+            min = std::min(min, ladderLengthRecur(wordList[i], endWord, wordList, bitmap));
+            bitmap[i] = true;
         }
     }
-    if(min == INT32_MAX){
+    if (min == INT32_MAX)
+    {
         return min;
     }
     return min + 1;
@@ -142,38 +158,48 @@ int solution::ladderLength(string beginWord, string endWord, vector<string>& wor
 */
 // transform to shortest path problem, undirected, no-weighted graph
 
-int solution::ladderLength(string beginWord, string endWord, vector<string>& wordList){
+int solution::ladderLength(string beginWord, string endWord, vector<string> &wordList)
+{
     int word_length = beginWord.size();
     map<string, vector<string>> dict;
-    for(auto word : wordList){
-        for(int i = 0; i < word_length; i++){
-            string pattern_word = word.substr(0,i) + "*" + word.substr(i+1, word_length);
+    for (auto word : wordList)
+    {
+        for (int i = 0; i < word_length; i++)
+        {
+            string pattern_word = word.substr(0, i) + "*" + word.substr(i + 1, word_length);
             vector<string> transformations;
-            if(dict.count(pattern_word) != 0){
+            if (dict.count(pattern_word) != 0)
+            {
                 dict[pattern_word].emplace_back(word);
             }
-            else{
+            else
+            {
                 dict[pattern_word] = vector<string>({word});
             }
-        } 
+        }
     }
 
     queue<pair<string, int>> q;
-    q.push(make_pair(beginWord,1));
-    map<string,bool> visited;
+    q.push(make_pair(beginWord, 1));
+    map<string, bool> visited;
     visited[beginWord] = true;
-    while(!q.empty()){
-        pair<string,int> entry = q.front();
+    while (!q.empty())
+    {
+        pair<string, int> entry = q.front();
         q.pop();
         string word = entry.first;
         int level = entry.second;
-        for(int i = 0; i < word_length; i++){
-            string pattern_word = word.substr(0,i) + "*" + word.substr(i+1, word_length);
-            for(auto adjacent_word : dict[pattern_word]){
-                if(adjacent_word == endWord){
+        for (int i = 0; i < word_length; i++)
+        {
+            string pattern_word = word.substr(0, i) + "*" + word.substr(i + 1, word_length);
+            for (auto adjacent_word : dict[pattern_word])
+            {
+                if (adjacent_word == endWord)
+                {
                     return level + 1;
                 }
-                if(visited.count(adjacent_word) == 0){
+                if (visited.count(adjacent_word) == 0)
+                {
                     visited[adjacent_word] = true;
                     q.push(make_pair(adjacent_word, level + 1));
                 }
@@ -183,42 +209,54 @@ int solution::ladderLength(string beginWord, string endWord, vector<string>& wor
     return 0;
 }
 
-vector<vector<string>> solution::findLadders(string beginWord, string endWord, vector<string>& wordList){
+vector<vector<string>> solution::findLadders(string beginWord, string endWord, vector<string> &wordList)
+{
     int word_length = beginWord.size();
-    map<string, vector<string>> dict;   
+    map<string, vector<string>> dict;
     vector<vector<string>> res;
-    if(find(wordList.begin(),wordList.end(), endWord) == wordList.end()){
+    if (find(wordList.begin(), wordList.end(), endWord) == wordList.end())
+    {
         return res;
     }
-    for(auto word : wordList){
-        for(int i = 0; i < word_length; i++){
-            string pattern_word = word.substr(0,i) + "*" + word.substr(i+1, word_length);
+    for (auto word : wordList)
+    {
+        for (int i = 0; i < word_length; i++)
+        {
+            string pattern_word = word.substr(0, i) + "*" + word.substr(i + 1, word_length);
             vector<string> transformations;
-            if(dict.count(pattern_word) != 0){
+            if (dict.count(pattern_word) != 0)
+            {
                 dict[pattern_word].emplace_back(word);
             }
-            else{
+            else
+            {
                 dict[pattern_word] = vector<string>({word});
             }
-        } 
+        }
     }
     queue<vector<string>> q;
     bool found = false;
-    map<string,bool> visited;
+    map<string, bool> visited;
     q.push({beginWord});
     visited[beginWord] = true;
-    while(!q.empty()){
+    while (!q.empty())
+    {
         int size = q.size();
         unordered_set<string> sub_visited;
-        for(int i = 0; i < size; i++){
+        for (int i = 0; i < size; i++)
+        {
             vector<string> path = q.front();
             q.pop();
             string word = path[path.size() - 1];
-            for(int j = 0; j< word_length; j++){
-                string pattern_word = word.substr(0,j) + "*" + word.substr(j+1, word_length);
-                for(auto adjacent : dict[pattern_word]){
-                    if(visited.count(adjacent) == 0){
-                        if(adjacent == endWord){
+            for (int j = 0; j < word_length; j++)
+            {
+                string pattern_word = word.substr(0, j) + "*" + word.substr(j + 1, word_length);
+                for (auto adjacent : dict[pattern_word])
+                {
+                    if (visited.count(adjacent) == 0)
+                    {
+                        if (adjacent == endWord)
+                        {
                             path.push_back(adjacent);
                             res.push_back(path);
                             found = true;
@@ -233,179 +271,230 @@ vector<vector<string>> solution::findLadders(string beginWord, string endWord, v
                 }
             }
         }
-        for(auto visited_word : sub_visited){
+        for (auto visited_word : sub_visited)
+        {
             visited[visited_word] = true;
         }
         sub_visited.clear();
-        if(found){
+        if (found)
+        {
             break;
         }
     }
     return res;
 }
 
-int solution::longestConsecutive(vector<int>& nums){
+int solution::longestConsecutive(vector<int> &nums)
+{
     int max = 0;
     unordered_set<int> num_set;
-    for(auto i : nums){
+    for (auto i : nums)
+    {
         num_set.insert(i);
     }
     int current;
-    for(auto i : nums){
-        if(num_set.count(i-1) == 0){
+    for (auto i : nums)
+    {
+        if (num_set.count(i - 1) == 0)
+        {
             current = i;
-            while(num_set.count(current) ==1){
+            while (num_set.count(current) == 1)
+            {
                 current += 1;
             }
-            if(max < (current - i)){
-                max = current-i;
+            if (max < (current - i))
+            {
+                max = current - i;
             }
         }
     }
     return max;
 }
 
-int sumNumbersRecur(int upper, TreeNode* root){
-    if(root->left == NULL && root->right == NULL){
-        return upper*10 + root->val;
+int sumNumbersRecur(int upper, TreeNode *root)
+{
+    if (root->left == NULL && root->right == NULL)
+    {
+        return upper * 10 + root->val;
     }
     int res = 0;
-    if(root->left){
-        res += sumNumbersRecur(upper*10 + root->val,root->left);
+    if (root->left)
+    {
+        res += sumNumbersRecur(upper * 10 + root->val, root->left);
     }
-    if(root->right){
-        res += sumNumbersRecur(upper*10 + root->val, root->right);
+    if (root->right)
+    {
+        res += sumNumbersRecur(upper * 10 + root->val, root->right);
     }
     return res;
 }
-int solution::sumNumbers(TreeNode* root){
-    if(root == NULL){
+int solution::sumNumbers(TreeNode *root)
+{
+    if (root == NULL)
+    {
         return 0;
     }
     return sumNumbersRecur(0, root);
 }
 
-void solution::solve(vector<vector<char>> &board){
+void solution::solve(vector<vector<char>> &board)
+{
     int row = board.size();
-    int column = row?board[0].size():0;
-    stack<pair<int,int>> s;
-    if(row == 0 || row == 1){
+    int column = row ? board[0].size() : 0;
+    stack<pair<int, int>> s;
+    if (row == 0 || row == 1)
+    {
         return;
     }
-    else{
-        for(int i = 0; i < column;i++){
-            if(board[0][i] == 'O'){
+    else
+    {
+        for (int i = 0; i < column; i++)
+        {
+            if (board[0][i] == 'O')
+            {
                 board[0][i] = 'T';
-                s.push(make_pair(0,i));
+                s.push(make_pair(0, i));
             }
-            if(board[row - 1][i] == 'O'){
-                board[row-1][i] = 'T';
-                s.push(make_pair(row-1, i));
+            if (board[row - 1][i] == 'O')
+            {
+                board[row - 1][i] = 'T';
+                s.push(make_pair(row - 1, i));
             }
         }
-        for(int i = 0; i < row;i++){
-            if(board[i][0] == 'O'){
+        for (int i = 0; i < row; i++)
+        {
+            if (board[i][0] == 'O')
+            {
                 board[i][0] = 'T';
-                s.push(make_pair(i,0));
+                s.push(make_pair(i, 0));
             }
-            if(board[i][column-1] == 'O'){
-                board[i][column-1] = 'T';
-                s.push(make_pair(i,column-1));
+            if (board[i][column - 1] == 'O')
+            {
+                board[i][column - 1] = 'T';
+                s.push(make_pair(i, column - 1));
             }
         }
     }
-    while(!s.empty()){
+    while (!s.empty())
+    {
         auto position = s.top();
         s.pop();
         int i = position.first;
         int j = position.second;
-        if(i!=0){
-            if(board[i-1][j] == 'O'){
-                board[i-1][j] = 'T';
-                s.push(make_pair(i-1,j));
+        if (i != 0)
+        {
+            if (board[i - 1][j] == 'O')
+            {
+                board[i - 1][j] = 'T';
+                s.push(make_pair(i - 1, j));
             }
         }
-        if(i!=row-1){
-            if(board[i+1][j] == 'O'){
-                board[i+1][j] = 'T';
-                s.push(make_pair(i+1,j));
+        if (i != row - 1)
+        {
+            if (board[i + 1][j] == 'O')
+            {
+                board[i + 1][j] = 'T';
+                s.push(make_pair(i + 1, j));
             }
         }
-        if(j!=0){
-            if(board[i][j-1] == 'O'){
-                board[i][j-1] = 'T';
-                s.push(make_pair(i,j-1));
+        if (j != 0)
+        {
+            if (board[i][j - 1] == 'O')
+            {
+                board[i][j - 1] = 'T';
+                s.push(make_pair(i, j - 1));
             }
         }
-        if(j!=column-1){
-            if(board[i][j+1] == 'O'){
-                board[i][j+1] = 'T';
-                s.push(make_pair(i,j+1));
+        if (j != column - 1)
+        {
+            if (board[i][j + 1] == 'O')
+            {
+                board[i][j + 1] = 'T';
+                s.push(make_pair(i, j + 1));
             }
         }
     }
-    for(int i = 0;i < row; i++){
-        for(int j = 0; j < column; j++){
-            if(board[i][j] == 'O'){
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < column; j++)
+        {
+            if (board[i][j] == 'O')
+            {
                 board[i][j] = 'X';
             }
-            if(board[i][j] == 'T'){
+            if (board[i][j] == 'T')
+            {
                 board[i][j] = 'O';
             }
         }
     }
 }
 
-vector<vector<string>> solution::partition(string s){
-    if(s.empty()){
+vector<vector<string>> solution::partition(string s)
+{
+    if (s.empty())
+    {
         return vector<vector<string>>();
     }
-    else if(s.size() == 1){
+    else if (s.size() == 1)
+    {
         return vector<vector<string>>{{s}};
     }
-    else{
+    else
+    {
         vector<vector<string>> res;
         int len = s.size();
-        for(int i = 0; i < len; i++){
+        for (int i = 0; i < len; i++)
+        {
             int j = i;
             int k = 0;
-            while(j>=k){
-                if(s[j] == s[k]){
+            while (j >= k)
+            {
+                if (s[j] == s[k])
+                {
                     j--;
                     k++;
                     continue;
                 }
                 break;
             }
-            if(j < k){
-                if(i < len - 1){
-                auto tmp = partition(s.substr(i+1));
-                for(auto& t : tmp){
-                    t.insert(t.begin(),s.substr(0,i+1));
-                    res.push_back(t);
+            if (j < k)
+            {
+                if (i < len - 1)
+                {
+                    auto tmp = partition(s.substr(i + 1));
+                    for (auto &t : tmp)
+                    {
+                        t.insert(t.begin(), s.substr(0, i + 1));
+                        res.push_back(t);
+                    }
                 }
-              }
-              else{
-                  res.push_back(vector<string>{s});
-              }
+                else
+                {
+                    res.push_back(vector<string>{s});
+                }
             }
         }
         return res;
     }
 }
 
-bool is_palindrome(string& s, int start, int end){
-    while(start < end){
-        if(s[start] != s[end]){
+bool is_palindrome(string &s, int start, int end)
+{
+    while (start < end)
+    {
+        if (s[start] != s[end])
+        {
             return false;
         }
-        start ++;
-        end --;
+        start++;
+        end--;
     }
     return true;
 }
 
-int solution::minCut(string s){
+int solution::minCut(string s)
+{
     // BFS: 超时
     // if(s.empty() || s.size() == 1){
     //     return 0;
@@ -439,54 +528,67 @@ int solution::minCut(string s){
     //     }
     // }
     // return 0;
-    if(s.empty() || s.size() == 1){
+    if (s.empty() || s.size() == 1)
+    {
         return 0;
-    }   
+    }
     int len = s.size();
     int *dp = new int[len];
-    for(int i = 0; i < len; i++){
+    for (int i = 0; i < len; i++)
+    {
         dp[i] = i;
     }
-    for(int i = 1; i < len; i++){
-        if(is_palindrome(s,0,i)){
+    for (int i = 1; i < len; i++)
+    {
+        if (is_palindrome(s, 0, i))
+        {
             dp[i] = 0;
             continue;
         }
-        for(int j = 0; j < i; j++){
-            if(is_palindrome(s,j+1,i)){
-                dp[i] = min(dp[i],dp[j]+1);
+        for (int j = 0; j < i; j++)
+        {
+            if (is_palindrome(s, j + 1, i))
+            {
+                dp[i] = min(dp[i], dp[j] + 1);
             }
         }
     }
-    return dp[len-1];
+    return dp[len - 1];
 }
 
-Node* solution::cloneGraph(Node* node){
-    queue<Node*> q;
-    queue<Node*> cloneq;
-    if(!node){
+Node *solution::cloneGraph(Node *node)
+{
+    queue<Node *> q;
+    queue<Node *> cloneq;
+    if (!node)
+    {
         return NULL;
     }
     q.push(node);
     cloneq.push(new Node(node->val));
-    Node* ret = cloneq.front();
-    unordered_set<Node*> visited;
-    unordered_map<Node*,Node*> nodemap;
+    Node *ret = cloneq.front();
+    unordered_set<Node *> visited;
+    unordered_map<Node *, Node *> nodemap;
     nodemap[node] = ret;
-    while(!q.empty()){
-        Node* front = q.front();
+    while (!q.empty())
+    {
+        Node *front = q.front();
         q.pop();
-        Node* clone_front = cloneq.front();
+        Node *clone_front = cloneq.front();
         cloneq.pop();
-        if(visited.count(front) == 0){
+        if (visited.count(front) == 0)
+        {
             int neighbors_size = front->neighbors.size();
-            for(int i = 0; i < neighbors_size;i++){
+            for (int i = 0; i < neighbors_size; i++)
+            {
                 q.push(front->neighbors[i]);
-                if(nodemap.count(front->neighbors[i])==0){
+                if (nodemap.count(front->neighbors[i]) == 0)
+                {
                     clone_front->neighbors.push_back(new Node(front->neighbors[i]->val));
                     nodemap[front->neighbors[i]] = clone_front->neighbors[i];
                 }
-                else{
+                else
+                {
                     clone_front->neighbors.push_back(nodemap[front->neighbors[i]]);
                 }
                 cloneq.push(clone_front->neighbors[i]);
@@ -497,66 +599,81 @@ Node* solution::cloneGraph(Node* node){
     return ret;
 }
 
-int solution::singleNumber(vector<int>& nums){
+int solution::singleNumber(vector<int> &nums)
+{
     int ret = nums[0];
     int i = 1;
     int len = nums.size();
-    while(i<len){
+    while (i < len)
+    {
         ret ^= nums[i];
         i++;
     }
     return ret;
 }
 
-int solution::singleNumber2(vector<int>& nums){
+int solution::singleNumber2(vector<int> &nums)
+{
     int one = 0, two = 0;
-    for(auto num : nums){
+    for (auto num : nums)
+    {
         one = (one ^ num) & (~two);
         two = (two ^ num) & (~one);
     }
     return one;
 }
 
-
 // unknown error when submit?
-vector<string> solution::wordBreak(string s, vector<string>& wordDict){
+vector<string> solution::wordBreak(string s, vector<string> &wordDict)
+{
     vector<vector<vector<string>>> dp(s.length() + 1);
     dp[0] = vector<vector<string>>();
-    dp[0].push_back(vector<string>(1,""));
+    dp[0].push_back(vector<string>(1, ""));
     int len = s.length();
-    for(int i = 1; i<= len; i++){
-        for(int j = 0; j < i; j++){
-            if(dp[j].size()>0 && find(wordDict.begin(),wordDict.end(),string(s.begin()+j,s.begin()+i))!=wordDict.end()){
-                for(auto& v : dp[j]){
+    for (int i = 1; i <= len; i++)
+    {
+        for (int j = 0; j < i; j++)
+        {
+            if (dp[j].size() > 0 && find(wordDict.begin(), wordDict.end(), string(s.begin() + j, s.begin() + i)) != wordDict.end())
+            {
+                for (auto &v : dp[j])
+                {
                     vector<string> t = v;
-                    t.push_back(string(s.begin()+j,s.begin()+i));
+                    t.push_back(string(s.begin() + j, s.begin() + i));
                     dp[i].push_back(t);
                 }
             }
         }
     }
     vector<string> res;
-    for(auto& v: dp[len]){
+    for (auto &v : dp[len])
+    {
         string t;
-        for(auto& str : v){
+        for (auto &str : v)
+        {
             t += str;
             t += " ";
         }
-        if(t.length() > 0){
-            res.push_back(string(t.begin()+1,t.end()-1));
+        if (t.length() > 0)
+        {
+            res.push_back(string(t.begin() + 1, t.end() - 1));
         }
     }
     return res;
 }
 
-bool solution::hasCycle(ListNode *head){ // two pointers: one fast, one slow
-    if(head == NULL || head->next == NULL){
+bool solution::hasCycle(ListNode *head)
+{ // two pointers: one fast, one slow
+    if (head == NULL || head->next == NULL)
+    {
         return false;
     }
     ListNode *slow = head;
     ListNode *fast = head->next;
-    while(slow != fast){
-        if(fast == NULL || fast->next == NULL){
+    while (slow != fast)
+    {
+        if (fast == NULL || fast->next == NULL)
+        {
             return false;
         }
         slow = slow->next;
@@ -565,44 +682,53 @@ bool solution::hasCycle(ListNode *head){ // two pointers: one fast, one slow
     return true;
 }
 
-ListNode* solution::detectCycle(ListNode *head){
-    if(head == NULL || head->next == NULL){
+ListNode *solution::detectCycle(ListNode *head)
+{
+    if (head == NULL || head->next == NULL)
+    {
         return NULL;
     }
     ListNode *fast, *slow;
     fast = head;
     slow = head;
-    while(fast != NULL && fast->next != NULL){
+    while (fast != NULL && fast->next != NULL)
+    {
         fast = fast->next->next;
         slow = slow->next;
-        if(fast == slow){
+        if (fast == slow)
+        {
             break;
         }
     }
-    if(fast == NULL || fast->next == NULL){
+    if (fast == NULL || fast->next == NULL)
+    {
         return NULL;
     }
     ListNode *pt1 = head;
     ListNode *pt2 = fast;
-    while(pt1 != pt2){
+    while (pt1 != pt2)
+    {
         pt1 = pt1->next;
         pt2 = pt2->next;
     }
     return pt1;
 }
 
-ListNode* recur_reorder_list(ListNode *head, int n){
-    if(n==1){
-        ListNode* ret = head->next;
+ListNode *recur_reorder_list(ListNode *head, int n)
+{
+    if (n == 1)
+    {
+        ListNode *ret = head->next;
         head->next = nullptr;
         return ret;
     }
-    if(n==2){
-        ListNode* ret = head->next->next;
+    if (n == 2)
+    {
+        ListNode *ret = head->next->next;
         head->next->next = nullptr;
         return ret;
     }
-    ListNode *tail = recur_reorder_list(head->next,n-2);
+    ListNode *tail = recur_reorder_list(head->next, n - 2);
     ListNode *sub_head = head->next;
     head->next = tail;
     ListNode *ret = tail->next;
@@ -610,90 +736,104 @@ ListNode* recur_reorder_list(ListNode *head, int n){
     return ret;
 }
 
-ListNode* solution::reverse_list(ListNode *head){
+ListNode *solution::reverse_list(ListNode *head)
+{
     ListNode *pt, *prev, *next;
-    if(head==nullptr || head->next == nullptr){
+    if (head == nullptr || head->next == nullptr)
+    {
         return head;
     }
     prev = head;
     pt = head->next;
-    while(pt){
+    while (pt)
+    {
         next = pt->next;
         pt->next = prev;
         prev = pt;
         pt = next;
     }
-   head->next = nullptr;
-   return prev;
+    head->next = nullptr;
+    return prev;
 }
 
-void reorderListv2(ListNode* head){
-
+void reorderListv2(ListNode *head)
+{
 }
 
-void solution::reorderList(ListNode* head){
+void solution::reorderList(ListNode *head)
+{
     int length = 0;
-    ListNode* pt = head;
+    ListNode *pt = head;
     while (pt)
     {
         length++;
         pt = pt->next;
     }
-    recur_reorder_list(head,length);
+    recur_reorder_list(head, length);
 }
 
-vector<vector<int>> solution::levelOrderBottom(TreeNode *root){
-        if(root == NULL){
-            return vector<vector<int>>();
-        }
-        else{
-            queue<TreeNode*> visit_queue;
-            visit_queue.push(root);
-            visit_queue.push(NULL);
-            stack<vector<int>> reverse_res_stack;
-            while (!visit_queue.empty() && visit_queue.front()!=NULL)
+vector<vector<int>> solution::levelOrderBottom(TreeNode *root)
+{
+    if (root == NULL)
+    {
+        return vector<vector<int>>();
+    }
+    else
+    {
+        queue<TreeNode *> visit_queue;
+        visit_queue.push(root);
+        visit_queue.push(NULL);
+        stack<vector<int>> reverse_res_stack;
+        while (!visit_queue.empty() && visit_queue.front() != NULL)
+        {
+            vector<int> level_nodes;
+            while (visit_queue.front() != NULL)
             {
-                vector<int> level_nodes;
-                while(visit_queue.front()!=NULL){
-                    TreeNode* present_node = visit_queue.front();
-                    visit_queue.pop();
-                    if(present_node->left){
-                        visit_queue.push(present_node->left);
-                    }
-                    if(present_node->right){
-                        visit_queue.push(present_node->right);
-                    }
-                    level_nodes.push_back(present_node->val);
+                TreeNode *present_node = visit_queue.front();
+                visit_queue.pop();
+                if (present_node->left)
+                {
+                    visit_queue.push(present_node->left);
                 }
-                reverse_res_stack.push(level_nodes);
-                visit_queue.push(NULL);
-                visit_queue.pop(); // pop null node in the queue
+                if (present_node->right)
+                {
+                    visit_queue.push(present_node->right);
+                }
+                level_nodes.push_back(present_node->val);
             }
-            vector<vector<int>>res;
-            while (!reverse_res_stack.empty())
-            {
-                res.push_back(reverse_res_stack.top());
-                reverse_res_stack.pop();
-            }
-            return res;
-            
+            reverse_res_stack.push(level_nodes);
+            visit_queue.push(NULL);
+            visit_queue.pop(); // pop null node in the queue
         }
+        vector<vector<int>> res;
+        while (!reverse_res_stack.empty())
+        {
+            res.push_back(reverse_res_stack.top());
+            reverse_res_stack.pop();
+        }
+        return res;
+    }
 }
 
-TreeNode* solution::sortedListToBST(ListNode *head){
-    if(head == NULL){
+TreeNode *solution::sortedListToBST(ListNode *head)
+{
+    if (head == NULL)
+    {
         return NULL;
     }
-    if(head->next == NULL){
+    if (head->next == NULL)
+    {
         return new TreeNode(head->val);
     }
     ListNode *slow, *fast, *prev;
     slow = fast = prev = head;
-    while(fast!= NULL && fast->next != NULL){
+    while (fast != NULL && fast->next != NULL)
+    {
         fast = fast->next->next;
         slow = slow->next;
     }
-    while(prev->next != slow){
+    while (prev->next != slow)
+    {
         prev = prev->next;
     }
     TreeNode *root = new TreeNode(slow->val);
@@ -704,41 +844,51 @@ TreeNode* solution::sortedListToBST(ListNode *head){
     return root;
 }
 
-vector<int> solution::preorderTraversal(TreeNode *root){
-    if(root == NULL){
+vector<int> solution::preorderTraversal(TreeNode *root)
+{
+    if (root == NULL)
+    {
         return vector<int>();
     }
-    stack<TreeNode*> s;
+    stack<TreeNode *> s;
     vector<int> res;
     TreeNode *entry;
     s.push(root);
-    while(!s.empty()){
+    while (!s.empty())
+    {
         entry = s.top();
         s.pop();
         res.emplace_back(entry->val);
-        if(entry->right){
+        if (entry->right)
+        {
             s.push(entry->right);
         }
-        if(entry->left){
+        if (entry->left)
+        {
             s.push(entry->left);
         }
     }
     return res;
 }
 
-vector<int> solution::inorderTraversal(TreeNode *root){
-    if(root == NULL){
+vector<int> solution::inorderTraversal(TreeNode *root)
+{
+    if (root == NULL)
+    {
         return vector<int>();
     }
     vector<int> ret;
     TreeNode *p = root;
-    stack<TreeNode*> s;
-    while(p || !s.empty()){
-        while(p){
+    stack<TreeNode *> s;
+    while (p || !s.empty())
+    {
+        while (p)
+        {
             s.push(p);
             p = p->left;
         }
-        if(!s.empty());
+        if (!s.empty())
+            ;
         {
             p = s.top();
             s.pop();
@@ -749,28 +899,35 @@ vector<int> solution::inorderTraversal(TreeNode *root){
     return ret;
 }
 
-vector<int> solution::postorderTraversal(TreeNode *root){
-    if(root == NULL){
+vector<int> solution::postorderTraversal(TreeNode *root)
+{
+    if (root == NULL)
+    {
         return vector<int>();
     }
     TreeNode *cur = root;
     TreeNode *prev = NULL;
-    stack<TreeNode*> s;
+    stack<TreeNode *> s;
     vector<int> ret;
-    while(cur || !s.empty()){
-        while(cur){
+    while (cur || !s.empty())
+    {
+        while (cur)
+        {
             s.push(cur);
             cur = cur->left;
         }
-        if(!s.empty()){
+        if (!s.empty())
+        {
             cur = s.top();
             s.pop();
-            if(cur->right == NULL || cur->right == prev){
+            if (cur->right == NULL || cur->right == prev)
+            {
                 ret.emplace_back(cur->val);
                 prev = cur;
                 cur = NULL;
             }
-            else{
+            else
+            {
                 s.push(cur);
                 cur = cur->right;
             }
@@ -779,32 +936,40 @@ vector<int> solution::postorderTraversal(TreeNode *root){
     return ret;
 }
 
-ListNode* solution::insertionSortList(ListNode *head){
-    if(head == NULL || head->next == NULL){
+ListNode *solution::insertionSortList(ListNode *head)
+{
+    if (head == NULL || head->next == NULL)
+    {
         return head;
     }
     ListNode *outer = head;
     ListNode *inner = NULL;
-    while(outer->next){
+    while (outer->next)
+    {
         inner = outer->next;
         outer->next = inner->next;
-        if(inner->val >= outer->val){ //means inner is maximum
+        if (inner->val >= outer->val)
+        { //means inner is maximum
             inner->next = outer->next;
             outer->next = inner;
             outer = inner;
             continue;
         }
-        if(head->val > inner->val){
+        if (head->val > inner->val)
+        {
             inner->next = head;
             head = inner;
         }
-        else{
+        else
+        {
             ListNode *tmp1 = head;
             ListNode *tmp2 = head->next;
-            while(tmp2 && tmp2->val <= inner->val && tmp2 != outer){
+            while (tmp2 && tmp2->val <= inner->val && tmp2 != outer)
+            {
                 tmp1 = tmp2;
                 tmp2 = tmp2->next;
-                if(tmp1->val > outer->val){
+                if (tmp1->val > outer->val)
+                {
                     outer = tmp1;
                 }
             }
@@ -816,14 +981,16 @@ ListNode* solution::insertionSortList(ListNode *head){
     return head;
 }
 
-void solution::recoverTree(TreeNode *root){  //隐式中序遍历，需要注意两个异常node的顺序不同
-    TreeNode* x, *y, *prev;
+void solution::recoverTree(TreeNode *root)
+{ //隐式中序遍历，需要注意两个异常node的顺序不同
+    TreeNode *x, *y, *prev;
     TreeNode *p = root;
-    stack<TreeNode*> s;
+    stack<TreeNode *> s;
     prev = NULL;
     x = NULL;
     y = NULL;
-    if(root == NULL){
+    if (root == NULL)
+    {
         return;
     }
     while (p || !s.empty())
@@ -833,8 +1000,10 @@ void solution::recoverTree(TreeNode *root){  //隐式中序遍历，需要注意
             s.push(p);
             p = p->left;
         }
-        if(!s.empty()){
-            if(!prev){
+        if (!s.empty())
+        {
+            if (!prev)
+            {
                 prev = s.top();
                 s.pop();
                 p = prev->right;
@@ -842,12 +1011,15 @@ void solution::recoverTree(TreeNode *root){  //隐式中序遍历，需要注意
             }
             p = s.top();
             s.pop();
-            if(prev->val > p->val){
+            if (prev->val > p->val)
+            {
                 y = p;
-                if(!x){
+                if (!x)
+                {
                     x = prev;
                 }
-                else{
+                else
+                {
                     break;
                 }
             }
@@ -858,8 +1030,10 @@ void solution::recoverTree(TreeNode *root){  //隐式中序遍历，需要注意
     swap(x->val, y->val);
 }
 
-ListNode* solution::mergesortList_recursion(ListNode *head){
-    if(head == NULL || head->next == NULL){
+ListNode *solution::mergesortList_recursion(ListNode *head)
+{
+    if (head == NULL || head->next == NULL)
+    {
         return head;
     }
     // then find the middle node of the single-linked list
@@ -873,32 +1047,36 @@ ListNode* solution::mergesortList_recursion(ListNode *head){
     slow->next = NULL;
     ListNode *left = mergesortList_recursion(head);
     ListNode *right = mergesortList_recursion(tmp);
-    ListNode  res = ListNode(0);
+    ListNode res = ListNode(0);
     ListNode *merge = &res;
     // merge two sorted list
-    while(left != NULL && right != NULL){
-        if(left->val > right->val){
+    while (left != NULL && right != NULL)
+    {
+        if (left->val > right->val)
+        {
             merge->next = right;
             right = right->next;
         }
-        else{
+        else
+        {
             merge->next = left;
             left = left->next;
         }
         merge = merge->next;
     }
-    merge->next = left?left:right;
+    merge->next = left ? left : right;
     return res.next;
 }
 
-ListNode* solution::mergesortList(ListNode *head){ //no-recursion of linked list merge sort
+ListNode *solution::mergesortList(ListNode *head)
+{ //no-recursion of linked list merge sort
     int length, interval, l1, l2;
     interval = 1;
     length = 0;
     ListNode *tmp = head, *pre, *h1, *h2;
     while (tmp)
     {
-        length ++;
+        length++;
         tmp = tmp->next;
     }
     ListNode res(0);
@@ -908,72 +1086,82 @@ ListNode* solution::mergesortList(ListNode *head){ //no-recursion of linked list
     {
         pre = &res;
         tmp = res.next;
-        while(tmp){
+        while (tmp)
+        {
             int i = interval;
             h1 = tmp;
-            while(i && tmp){
-                i --;
-                tmp = tmp->next; 
+            while (i && tmp)
+            {
+                i--;
+                tmp = tmp->next;
             }
-            if(i){ // h2 is none
+            if (i)
+            { // h2 is none
                 break;
             }
             h2 = tmp;
             i = interval;
-            while(i && tmp){
-                i --;
+            while (i && tmp)
+            {
+                i--;
                 tmp = tmp->next;
             }
             l1 = interval;
             l2 = interval - i;
-            while(l1 && l2){
-                if(h1->val <= h2->val){
+            while (l1 && l2)
+            {
+                if (h1->val <= h2->val)
+                {
                     pre->next = h1;
                     h1 = h1->next;
                     l1--;
                 }
-                else{
+                else
+                {
                     pre->next = h2;
                     h2 = h2->next;
                     l2--;
                 }
                 pre = pre->next;
             }
-            if(l1){
+            if (l1)
+            {
                 pre->next = h1;
             }
-            else{
+            else
+            {
                 pre->next = h2;
             }
-            while(l1 > 0 || l2 > 0){
+            while (l1 > 0 || l2 > 0)
+            {
                 pre = pre->next;
-                l1 --;
-                l2 --;
+                l1--;
+                l2--;
             }
             pre->next = tmp;
         }
         interval *= 2;
     }
     return res.next;
-    
 }
 
-ListNode* solution::quicksortList(ListNode *head)
+ListNode *solution::quicksortList(ListNode *head)
 {
-    if(head == NULL || head->next == NULL)
+    if (head == NULL || head->next == NULL)
     {
         return head;
     }
-    else if(head->next->next == NULL)
+    else if (head->next->next == NULL)
     {
-        if(head->val > head->next->val)
+        if (head->val > head->next->val)
         {
-            ListNode* ret = head->next;
+            ListNode *ret = head->next;
             ret->next = head;
             head->next = NULL;
             return ret;
         }
-        else{
+        else
+        {
             return head;
         }
     }
@@ -983,14 +1171,15 @@ ListNode* solution::quicksortList(ListNode *head)
     ListNode *tmp = head->next;
     ListNode *pleft = &left;
     ListNode *pright = &right;
-    while(tmp)
+    while (tmp)
     {
-        if(tmp->val <= pivot->val)
+        if (tmp->val <= pivot->val)
         {
             pleft->next = tmp;
             pleft = pleft->next;
         }
-        else{
+        else
+        {
             pright->next = tmp;
             pright = pright->next;
         }
@@ -1002,7 +1191,7 @@ ListNode* solution::quicksortList(ListNode *head)
     pleft = quicksortList(left.next);
     pright = quicksortList(right.next);
     left.next = pleft;
-    while(pleft->next)
+    while (pleft->next)
     {
         pleft = pleft->next;
     }
@@ -1012,7 +1201,7 @@ ListNode* solution::quicksortList(ListNode *head)
 
 unsigned gcd(unsigned a, unsigned b)
 {
-    if(b == 0)
+    if (b == 0)
     {
         return a;
     }
@@ -1027,56 +1216,56 @@ int solution::maxPoints(vector<vector<int>> &points)
 {
     int count = 0;
     size_t size = points.size();
-    for(int i = 0; i < size; i++)
+    for (int i = 0; i < size; i++)
     {
-	    map<pair<int,int>, int> numbers;
-	    int cnt = 0;
-	    int same_point_cnt = 0;
-	    int same_vertical_line_cnt = 0;
-	    int same_horizontal_line_cnt = 0;
-	    for(int j = 0; j < size; j++)
-	    {
-            if(i == j)
+        map<pair<int, int>, int> numbers;
+        int cnt = 0;
+        int same_point_cnt = 0;
+        int same_vertical_line_cnt = 0;
+        int same_horizontal_line_cnt = 0;
+        for (int j = 0; j < size; j++)
+        {
+            if (i == j)
             {
                 continue;
             }
-		    if(points[i][0] == points[j][0] && points[i][1] == points[j][1])
-		    {
-			    same_point_cnt ++;
-		    }
-		    else if(points[i][0] == points[j][0])
-		    {
-			    same_vertical_line_cnt ++;
-		    }
-		    else if(points[i][1] == points[j][1])
-		    {
-			    same_horizontal_line_cnt ++;
-		    }
-		    else
-		    {
-			    int deltax = points[i][0] - points[j][0];
-			    int deltay = points[i][1] - points[j][1];
-			    int g;
+            if (points[i][0] == points[j][0] && points[i][1] == points[j][1])
+            {
+                same_point_cnt++;
+            }
+            else if (points[i][0] == points[j][0])
+            {
+                same_vertical_line_cnt++;
+            }
+            else if (points[i][1] == points[j][1])
+            {
+                same_horizontal_line_cnt++;
+            }
+            else
+            {
+                int deltax = points[i][0] - points[j][0];
+                int deltay = points[i][1] - points[j][1];
+                int g;
                 unsigned abs_deltax = abs(deltax);
                 unsigned abs_deltay = abs(deltay);
-                g = abs_deltax > abs_deltay?gcd(abs_deltax,abs_deltay):gcd(abs_deltay, abs_deltax);
-                cnt = max(cnt, ++numbers[make_pair(deltax/g, deltay/g)]);			    
-		    } 
-	    }
+                g = abs_deltax > abs_deltay ? gcd(abs_deltax, abs_deltay) : gcd(abs_deltay, abs_deltax);
+                cnt = max(cnt, ++numbers[make_pair(deltax / g, deltay / g)]);
+            }
+        }
         int tmp = max(cnt, max(same_vertical_line_cnt, same_horizontal_line_cnt));
         count = max(count, tmp + same_point_cnt + 1);
     }
-    return count;	
+    return count;
 }
 
 //Don't consider big integer
-int solution::evalRPN(vector<string>& tokens)
+int solution::evalRPN(vector<string> &tokens)
 {
     stack<long> s;
     long oprand1, oprand2, result;
-    for(string &token : tokens)
+    for (string &token : tokens)
     {
-        if(token == "+")
+        if (token == "+")
         {
             oprand2 = s.top();
             s.pop();
@@ -1085,7 +1274,7 @@ int solution::evalRPN(vector<string>& tokens)
             result = oprand1 + oprand2;
             s.push(result);
         }
-        else if(token == "-")
+        else if (token == "-")
         {
             oprand2 = s.top();
             s.pop();
@@ -1094,7 +1283,7 @@ int solution::evalRPN(vector<string>& tokens)
             result = oprand1 - oprand2;
             s.push(result);
         }
-        else if(token == "*")
+        else if (token == "*")
         {
             oprand2 = s.top();
             s.pop();
@@ -1103,7 +1292,7 @@ int solution::evalRPN(vector<string>& tokens)
             result = oprand1 * oprand2;
             s.push(result);
         }
-        else if(token == "/")
+        else if (token == "/")
         {
             oprand2 = s.top();
             s.pop();
@@ -1112,7 +1301,8 @@ int solution::evalRPN(vector<string>& tokens)
             result = oprand1 / oprand2;
             s.push(result);
         }
-        else{
+        else
+        {
             long tmp = stol(token);
             s.push(tmp);
         }
@@ -1127,20 +1317,20 @@ string solution::reverseWords(string s)
     stack<string> reverse_stack;
     auto left = s.begin();
     auto right = s.begin();
-    while(true)
+    while (true)
     {
-        while(*left == ' ' && left != s.end())
+        while (*left == ' ' && left != s.end())
         {
             left++;
         }
         right = left;
-        while(right != s.end() && *right != ' ')
+        while (right != s.end() && *right != ' ')
         {
             right++;
         }
-        if(left != s.end())
+        if (left != s.end())
         {
-            reverse_stack.push(string(left,right));
+            reverse_stack.push(string(left, right));
         }
         else
         {
@@ -1149,11 +1339,11 @@ string solution::reverseWords(string s)
         left = right;
     }
     string result;
-    while(!reverse_stack.empty())
+    while (!reverse_stack.empty())
     {
         result += reverse_stack.top();
         reverse_stack.pop();
-        if(!reverse_stack.empty())
+        if (!reverse_stack.empty())
         {
             result += " ";
         }
@@ -1161,25 +1351,25 @@ string solution::reverseWords(string s)
     return result;
 }
 
-int solution::maxProduct(vector<int>& nums)
+int solution::maxProduct(vector<int> &nums)
 {
     // assmue nums at least has one element.
     int tmin = nums[0], tmax = nums[0], ret = nums[0];
     size_t length = nums.size();
-    for(int i = 1; i < length; i++)
+    for (int i = 1; i < length; i++)
     {
-        tmax = max(max(tmax*nums[i], tmin*nums[i]), nums[i]);
-        tmin = min(min(tmax*nums[i], tmin*nums[i]), nums[i]);
-        ret = max(ret,tmax);
+        tmax = max(max(tmax * nums[i], tmin * nums[i]), nums[i]);
+        tmin = min(min(tmax * nums[i], tmin * nums[i]), nums[i]);
+        ret = max(ret, tmax);
     }
     return ret;
 }
 
-int solution::findMin(vector<int>& nums)
+int solution::findMin(vector<int> &nums)
 {
     // assume the nums has at least one element
     size_t len = nums.size();
-    if(nums[len -1] >= nums[0])
+    if (nums[len - 1] >= nums[0])
     {
         return nums[0];
     }
@@ -1187,17 +1377,17 @@ int solution::findMin(vector<int>& nums)
     int pivot = nums[0];
     size_t left = 0;
     size_t right = len;
-    while(middle > 0 && nums[middle] > nums[middle - 1])
+    while (middle > 0 && nums[middle] > nums[middle - 1])
     {
-        if(nums[middle] > pivot)
+        if (nums[middle] > pivot)
         {
             left = middle;
-            middle = (left + right)/2;
+            middle = (left + right) / 2;
         }
         else
         {
             right = middle;
-            middle = (left + right)/2;
+            middle = (left + right) / 2;
         }
     }
     return nums[middle];
@@ -1205,21 +1395,21 @@ int solution::findMin(vector<int>& nums)
 
 int solution::findMin2(vector<int> &nums)
 {
-//  这个版本的代码过了，还很快，但是思路比较乱， 下面再给一个思路清晰的版本
+    //  这个版本的代码过了，还很快，但是思路比较乱， 下面再给一个思路清晰的版本
     int pivot = 0, pivotval;
     size_t len = nums.size();
-    if(nums[0] < nums[len - 1])
+    if (nums[0] < nums[len - 1])
     {
         return nums[0];
     }
-    else if(nums[0] == nums[len - 1])
+    else if (nums[0] == nums[len - 1])
     {
         int tmp = nums[len - 1];
-        while(nums[pivot] == nums[len-1] && pivot < len - 1)
+        while (nums[pivot] == nums[len - 1] && pivot < len - 1)
         {
-            pivot ++;
+            pivot++;
         }
-        if(pivot == len - 1)
+        if (pivot == len - 1)
         {
             return nums[0];
         }
@@ -1227,84 +1417,85 @@ int solution::findMin2(vector<int> &nums)
     int left = pivot, right = len - 1;
     int middle = (left + right) / 2;
     pivotval = nums[pivot];
-    if(pivotval < nums[len - 1])
+    if (pivotval < nums[len - 1])
     {
         return pivotval;
     }
-    while(middle > pivot && nums[middle] >= nums[middle - 1])
+    while (middle > pivot && nums[middle] >= nums[middle - 1])
     {
-        if(middle < len -1 && nums[middle] > nums[middle+1])
+        if (middle < len - 1 && nums[middle] > nums[middle + 1])
         {
             break;
         }
-        if(nums[middle] >= pivotval)
+        if (nums[middle] >= pivotval)
         {
             left = middle;
-            middle = (left + right)/2;
+            middle = (left + right) / 2;
         }
         else
         {
             right = middle;
-            middle = (left + right)/2;
+            middle = (left + right) / 2;
         }
     }
-    return min(nums[middle],nums[middle+1]);
+    return min(nums[middle], nums[middle + 1]);
 }
 
-int findMin2_refine(vector<int>& nums)
+int findMin2_refine(vector<int> &nums)
 {
     int left = 0, right = nums.size() - 1;
     int middle;
-    if(nums[left] < nums[right])
+    if (nums[left] < nums[right])
     {
         return nums[left];
     }
-    while(left < right)
+    while (left < right)
     {
-        if(nums[left] < nums[right])
+        if (nums[left] < nums[right])
         {
             return nums[left];
         }
         middle = (left + right) / 2;
-        if(nums[middle] > nums[left])
+        if (nums[middle] > nums[left])
         {
             left = middle + 1;
         }
-        else if(nums[middle] < nums[left])
+        else if (nums[middle] < nums[left])
         {
             right = middle;
         }
-        else{
+        else
+        {
             left++;
         }
     }
     return nums[left];
 }
 
-ListNode* solution::getIntersectionNode(ListNode *headA, ListNode *headB)
+ListNode *solution::getIntersectionNode(ListNode *headA, ListNode *headB)
 {
     unsigned long lenA = 0, lenB = 0;
     int gap;
-    ListNode* tmpA = headA, *tmpB = headB;
-    while(tmpA)
+    ListNode *tmpA = headA, *tmpB = headB;
+    while (tmpA)
     {
-        lenA ++;
+        lenA++;
         tmpA = tmpA->next;
     }
-    while(tmpB)
+    while (tmpB)
     {
-        lenB ++;
+        lenB++;
         tmpB = tmpB->next;
     }
-    if(lenB > lenA)
+    if (lenB > lenA)
     {
         gap = lenB - lenA;
         tmpB = headB;
         tmpA = headA;
-        while(gap)
+        while (gap)
         {
             tmpB = tmpB->next;
-            gap --;
+            gap--;
         }
     }
     else
@@ -1312,86 +1503,85 @@ ListNode* solution::getIntersectionNode(ListNode *headA, ListNode *headB)
         gap = lenA - lenB;
         tmpA = headA;
         tmpB = headB;
-        while(gap)
+        while (gap)
         {
             tmpA = tmpA->next;
-            gap --;
+            gap--;
         }
     }
-    while(tmpA != tmpB && tmpB && tmpA)
+    while (tmpA != tmpB && tmpB && tmpA)
     {
         tmpA = tmpA->next;
         tmpB = tmpB->next;
     }
     return tmpA;
-
-    
 }
 
 int solution::findPeakElement(vector<int> &nums)
 {
     size_t len = nums.size();
-    if(len == 1)
+    if (len == 1)
     {
         return 0;
     }
     else
     {
-        if(nums[0]>nums[1])
+        if (nums[0] > nums[1])
         {
             return 0;
         }
-        if(nums[len - 1] > nums[len - 2])
+        if (nums[len - 1] > nums[len - 2])
         {
             return len - 1;
         }
         int middle, middlel, middler;
         int left = 0, right = len - 1;
-        middle = (left + right)/2;
-        while(middle > 0 && left < right && (nums[middle] < nums[middle - 1] || nums[middle] < nums[middle+1]))
+        middle = (left + right) / 2;
+        while (middle > 0 && left < right && (nums[middle] < nums[middle - 1] || nums[middle] < nums[middle + 1]))
         {
-            middlel = (left + middle)/2;
-            middler = (right + middle)/2;
-            if(nums[middlel] > nums[left] && nums[middlel] > nums[middle])
+            middlel = (left + middle) / 2;
+            middler = (right + middle) / 2;
+            if (nums[middlel] > nums[left] && nums[middlel] > nums[middle])
             {
                 right = middle;
                 middle = (left + right) / 2;
                 continue;
             }
-            else if(nums[middler] > nums[right] && nums[middler] > nums[middle])
+            else if (nums[middler] > nums[right] && nums[middler] > nums[middle])
             {
                 left = middle;
                 middle = (left + right) / 2;
                 continue;
             }
-            else{
+            else
+            {
                 int tmp = left + 1;
                 bool flag = false;
-                while(tmp <= middle)
+                while (tmp <= middle)
                 {
-                    if(nums[tmp] > nums[left] && nums[tmp] > nums[middle])
+                    if (nums[tmp] > nums[left] && nums[tmp] > nums[middle])
                     {
                         right = middle;
-                        middle = (left + right)/2;
+                        middle = (left + right) / 2;
                         flag = true;
                         break;
                     }
-                    tmp ++;
+                    tmp++;
                 }
-                if(flag)
+                if (flag)
                 {
                     continue;
                 }
                 tmp = right - 1;
-                while(tmp >= middle)
+                while (tmp >= middle)
                 {
-                    if(nums[tmp] > nums[right] && nums[tmp] > nums[middle])
+                    if (nums[tmp] > nums[right] && nums[tmp] > nums[middle])
                     {
                         left = middle;
-                        middle = (left + right)/2;
+                        middle = (left + right) / 2;
                         break;
                     }
-                    tmp --;
+                    tmp--;
                 }
             }
         }
@@ -1403,38 +1593,38 @@ int solution::findPeakElement(vector<int> &nums)
 int solution::maximumGap(vector<int> &nums)
 {
     int n = nums.size();
-    if(n < 2)
+    if (n < 2)
     {
         return 0;
     }
     int exp = 1;
     vector<int> buf(n);
     int max_val = *max_element(nums.begin(), nums.end());
-    while(max_val >= exp)
+    while (max_val >= exp)
     {
         vector<int> cnt(10);
-        for(int i = 0; i < n; i++)
+        for (int i = 0; i < n; i++)
         {
             int digit = (nums[i] / exp) % 10;
-            cnt[digit] ++;
+            cnt[digit]++;
         }
-        for(int i = 1; i < 10; i++)
+        for (int i = 1; i < 10; i++)
         {
-            cnt[i] += cnt[i-1];
+            cnt[i] += cnt[i - 1];
         }
-        for(int i = n - 1; i >= 0; i--)
+        for (int i = n - 1; i >= 0; i--)
         {
             int digit = (nums[i] / exp) % 10;
             buf[cnt[digit] - 1] = nums[i];
-            cnt[digit] --;
+            cnt[digit]--;
         }
         copy(buf.begin(), buf.end(), nums.begin());
         exp *= 10;
     }
     int ret = 0;
-    for(int i = 1; i < n; i++)
+    for (int i = 1; i < n; i++)
     {
-        ret = max(ret, nums[i]-nums[i-1]);
+        ret = max(ret, nums[i] - nums[i - 1]);
     }
     return ret;
 }
@@ -1448,11 +1638,11 @@ int solution::compareVersion(string version1, string version2)
     char *tmp1, *tmp2;
     left1 = s1;
     left2 = s2;
-    while(*left1 && *left2)
+    while (*left1 && *left2)
     {
         l1 = strtol(left1, &tmp1, 10);
         l2 = strtol(left2, &tmp2, 10);
-        if(*tmp1)
+        if (*tmp1)
         {
             left1 = ++tmp1;
         }
@@ -1460,7 +1650,7 @@ int solution::compareVersion(string version1, string version2)
         {
             left1 = tmp1;
         }
-        if(*tmp2)
+        if (*tmp2)
         {
             left2 = ++tmp2;
         }
@@ -1468,63 +1658,62 @@ int solution::compareVersion(string version1, string version2)
         {
             left2 = tmp2;
         }
-        if(l1 == l2)
+        if (l1 == l2)
         {
             continue;
         }
-        return l1>l2?1:-1;
+        return l1 > l2 ? 1 : -1;
     }
-    if(!(*left1) && !(*left2))
+    if (!(*left1) && !(*left2))
     {
         return 0;
     }
     while (*left1)
     {
-        if(*left1 != '0' && *left1 != '.')
+        if (*left1 != '0' && *left1 != '.')
         {
             return 1;
         }
-        left1 ++;
+        left1++;
     }
-    while(*left2)
+    while (*left2)
     {
-        if(*left2 != '0' && *left2 != '.')
+        if (*left2 != '0' && *left2 != '.')
         {
             return -1;
         }
-        left2 ++;
+        left2++;
     }
     return 0;
-    
 }
 
 string solution::fractionToDecimal(int numerator, int denominator)
 {
     string ret;
-    if(numerator == 0)
+    if (numerator == 0)
     {
         return string("0");
     }
-    if((numerator < 0) ^ (denominator < 0))
+    if ((numerator < 0) ^ (denominator < 0))
     {
         ret.push_back('-');
     }
     long num = (long)(numerator);
     long dom = (long)denominator;
-    num = num < 0?-num:num;
-    dom = dom < 0?-dom:dom;
-    unordered_map<int,int> remain_location;
+    num = num < 0 ? -num : num;
+    dom = dom < 0 ? -dom : dom;
+    unordered_map<int, int> remain_location;
     long remainder;
-    ret += to_string(num/dom);
+    ret += to_string(num / dom);
     remainder = num % dom;
-    if(remainder == 0)
+    if (remainder == 0)
     {
         return ret;
     }
     ret.push_back('.');
-    while(remainder != 0)
+    while (remainder != 0)
     {
-        if(remain_location.count(remainder) != 0)
+        if (remain_location.count(remainder) != 0)
         {
             ret = ret.substr(0, remain_location[remainder]) + "(" + ret.substr(remain_location[remainder]) + ")";
             break;
@@ -1544,15 +1733,15 @@ vector<int> solution::twoSum(vector<int> &numbers, int target)
 {
     int left = 0, right = numbers.size() - 1;
     int sum;
-    while((sum = numbers[left] + numbers[right]) != target)
+    while ((sum = numbers[left] + numbers[right]) != target)
     {
-        if(sum < target)
+        if (sum < target)
         {
-            left ++;
+            left++;
         }
         else
         {
-            right --;
+            right--;
         }
     }
     vector<int> ret;
@@ -1564,39 +1753,37 @@ vector<int> solution::twoSum(vector<int> &numbers, int target)
 string solution::convertToTitle(int n)
 {
     string ret;
-    while(n > 0)
+    while (n > 0)
     {
         n -= 1;
-        ret.push_back( n % 26 + 'A');
+        ret.push_back(n % 26 + 'A');
         n /= 26;
     }
-    reverse(ret.begin(),ret.end());
+    reverse(ret.begin(), ret.end());
     return ret;
 }
 
-int solution::majorityElement(vector<int>& nums)
+int solution::majorityElement(vector<int> &nums)
 {
     int ret = nums[0];
     int count = 1;
     size_t size = nums.size();
-    for(int i = 1; i < size; i++)
+    for (int i = 1; i < size; i++)
     {
-        if(count == 0)
+        if (count == 0)
         {
             ret = nums[i];
             count = 1;
             continue;
         }
-        if(nums[i] == ret)
+        if (nums[i] == ret)
         {
-            count ++;
+            count++;
         }
         else
         {
-            count --;
+            count--;
         }
-
-        
     }
     return ret;
 }
@@ -1604,7 +1791,7 @@ int solution::majorityElement(vector<int>& nums)
 int solution::titleToNumber(string s)
 {
     int ret = 0;
-    for(char c : s)
+    for (char c : s)
     {
         int t = c - 'A' + 1;
         ret = ret * 26 + t;
@@ -1618,13 +1805,13 @@ int solution::trailingZeroes(int n)
     order2 = order5 = 0;
     int i = 2;
     int t;
-    while( ( t = n / i) > 0)
+    while ((t = n / i) > 0)
     {
         order2 += t;
         i *= 2;
     }
     i = 5;
-    while( (t = n / i) > 0)
+    while ((t = n / i) > 0)
     {
         order5 += t;
         i *= 5;
@@ -1632,39 +1819,38 @@ int solution::trailingZeroes(int n)
     return order2 < order5 ? order2 : order5;
 }
 
-int solution::calculateMinimumHP(vector<vector<int>>& dungeon)
+int solution::calculateMinimumHP(vector<vector<int>> &dungeon)
 {
-    if(dungeon.size() == 0 || dungeon[0].size() == 0)
+    if (dungeon.size() == 0 || dungeon[0].size() == 0)
     {
         return 0;
     }
     size_t rows = dungeon.size();
     size_t columns = dungeon[0].size();
-    vector<vector<int>> dp(rows+1, vector<int>(columns + 1,INT32_MAX)); 
-    dp[rows-1][columns] = dp[rows][columns-1] = 1;
-    for(ssize_t i = rows - 1; i >= 0; i--)
+    vector<vector<int>> dp(rows + 1, vector<int>(columns + 1, INT32_MAX));
+    dp[rows - 1][columns] = dp[rows][columns - 1] = 1;
+    for (ssize_t i = rows - 1; i >= 0; i--)
     {
-        for(ssize_t j = columns - 1; j >= 0; j--)
+        for (ssize_t j = columns - 1; j >= 0; j--)
         {
-            int minn = min(dp[i+1][j], dp[i][j+1]);
+            int minn = min(dp[i + 1][j], dp[i][j + 1]);
             dp[i][j] = max(minn - dungeon[i][j], 1);
         }
     }
     return dp[0][0];
 }
 
-string solution::largestNumber(vector<int>& nums)
+string solution::largestNumber(vector<int> &nums)
 {
     vector<string> snums;
-    for(int entry : nums)
+    for (int entry : nums)
     {
         snums.push_back(to_string(entry));
     }
-    sort(snums.begin(), snums.end(), [](const string & a, const string & b)
-    {
+    sort(snums.begin(), snums.end(), [](const string &a, const string &b) {
         string t1 = a + b;
         string t2 = b + a;
-        if(t1 >= t2)
+        if (t1 >= t2)
         {
             return false;
         }
@@ -1674,11 +1860,11 @@ string solution::largestNumber(vector<int>& nums)
         }
     });
     string ret;
-    for(auto i = snums.rbegin(); i != snums.rend(); i++)
+    for (auto i = snums.rbegin(); i != snums.rend(); i++)
     {
         ret += *i;
     }
-    if(ret.size() > 1 && ret[0] == '0')
+    if (ret.size() > 1 && ret[0] == '0')
     {
         return "0";
     }
@@ -1688,30 +1874,30 @@ string solution::largestNumber(vector<int>& nums)
 vector<string> solution::findRepeatedDnaSequences(string s)
 {
     vector<string> ret;
-    if(s.size() <= 10)
+    if (s.size() <= 10)
     {
         return ret;
     }
     auto i = s.begin();
     auto j = i + 10;
-    unordered_map<string,int> hash;
-    while(j <= s.end())
+    unordered_map<string, int> hash;
+    while (j <= s.end())
     {
         string tmp = string(i, j);
-        if(hash.count(tmp) == 0)
+        if (hash.count(tmp) == 0)
         {
             hash[tmp] = 1;
         }
         else
         {
-            hash[tmp] ++;
+            hash[tmp]++;
         }
-        i ++;
-        j ++;
+        i++;
+        j++;
     }
-    for(auto entry : hash)
+    for (auto entry : hash)
     {
-        if(entry.second > 1)
+        if (entry.second > 1)
         {
             ret.push_back(entry.first);
         }
@@ -1719,19 +1905,18 @@ vector<string> solution::findRepeatedDnaSequences(string s)
     return ret;
 }
 
-
-void reverse(vector<int>& nums, int start, int end)
+void reverse(vector<int> &nums, int start, int end)
 {
-    while(start < end)
+    while (start < end)
     {
         swap(nums[start], nums[end]);
-        start ++;
-        end --;
+        start++;
+        end--;
     }
 }
 
 // reverse threee times
-void solution::rotate(vector<int>& nums, int k)
+void solution::rotate(vector<int> &nums, int k)
 {
     k %= nums.size();
     reverse(nums, 0, nums.size() - 1);
@@ -1743,17 +1928,17 @@ uint32_t solution::reverseBits(uint32_t n)
 {
     uint32_t ret = 0;
     int count = 31;
-    while(count > 0)
+    while (count > 0)
     {
-        if(n & 1)
+        if (n & 1)
         {
             ret |= 1;
         }
         ret <<= 1;
         n >>= 1;
-        count --;
+        count--;
     }
-    if(n & 1)
+    if (n & 1)
     {
         ret |= 1;
     }
@@ -1763,29 +1948,29 @@ uint32_t solution::reverseBits(uint32_t n)
 int solution::hammingWeight(uint32_t n)
 {
     int ret = 0;
-    while(n)
+    while (n)
     {
-        n &= (n-1);
-        ret ++;
+        n &= (n - 1);
+        ret++;
     }
     return ret;
 }
 
-int solution::rob(vector<int>& nums)
+int solution::rob(vector<int> &nums)
 {
     size_t size = nums.size();
-    if(size == 0)
+    if (size == 0)
     {
         return 0;
     }
-    if(size == 1)
+    if (size == 1)
     {
         return nums[0];
     }
     int first, second;
     first = nums[0];
-    second = max(nums[0],nums[1]);
-    for(size_t i = 2; i < size; i++)
+    second = max(nums[0], nums[1]);
+    for (size_t i = 2; i < size; i++)
     {
         int tmp = second;
         second = max(nums[i] + first, second);
@@ -1797,115 +1982,114 @@ int solution::rob(vector<int>& nums)
 vector<int> solution::rightSideView(TreeNode *root)
 {
     vector<int> ret;
-    queue<TreeNode*> level_queue;
-    if(root == NULL)
+    queue<TreeNode *> level_queue;
+    if (root == NULL)
     {
         return ret;
     }
     level_queue.push(root);
-    while(!level_queue.empty())
+    while (!level_queue.empty())
     {
         size_t size = level_queue.size();
         ret.push_back(level_queue.front()->val);
-        for(int i = 0; i < size; i ++)
+        for (int i = 0; i < size; i++)
         {
             auto tmp = level_queue.front();
             level_queue.pop();
-            if(tmp->right)
+            if (tmp->right)
             {
                 level_queue.push(tmp->right);
             }
-            if(tmp->left)
+            if (tmp->left)
             {
                 level_queue.push(tmp->left);
             }
-
         }
     }
     return ret;
-
 }
 
-struct island_set_node{
-    struct island_set_node* parent;
+struct island_set_node
+{
+    struct island_set_node *parent;
     int rank;
 };
 
-void island_union(struct island_set_node* a, struct island_set_node* b)
+void island_union(struct island_set_node *a, struct island_set_node *b)
 {
-    if(a->rank > b->rank)
+    if (a->rank > b->rank)
     {
         b->parent = a;
     }
     else
     {
         a->parent = b;
-        if(a->rank == b->rank)
+        if (a->rank == b->rank)
         {
-            b->rank ++;
+            b->rank++;
         }
     }
 }
 
-struct island_set_node* find_set(struct island_set_node* x)
+struct island_set_node *find_set(struct island_set_node *x)
 {
-    if(x != x->parent)
+    if (x != x->parent)
     {
         x->parent = find_set(x->parent);
     }
     return x->parent;
 }
 
-int solution::numIslands(vector<vector<char>>& grid)
+int solution::numIslands(vector<vector<char>> &grid)
 {
     int row = grid.size();
-    if(row == 0)
+    if (row == 0)
     {
         return 0;
     }
     int column = grid[0].size();
-    if(column == 0)
+    if (column == 0)
     {
         return 0;
     }
     struct island_set_node nodes[row][column];
-    for(int i = 0; i < row; i++)
+    for (int i = 0; i < row; i++)
     {
-        for(int j = 0; j < column; j ++)
+        for (int j = 0; j < column; j++)
         {
-            if(grid[i][j] == '1')
+            if (grid[i][j] == '1')
             {
                 nodes[i][j].rank = 0;
                 nodes[i][j].parent = &nodes[i][j];
-                if(i > 0)
+                if (i > 0)
                 {
-                    if(grid[i-1][j] == '1')
+                    if (grid[i - 1][j] == '1')
                     {
-                        island_union(find_set(&nodes[i][j]), find_set(&nodes[i-1][j]));
+                        island_union(find_set(&nodes[i][j]), find_set(&nodes[i - 1][j]));
                     }
                 }
-                if(j > 0)
+                if (j > 0)
                 {
-                    if(grid[i][j-1] == '1')
+                    if (grid[i][j - 1] == '1')
                     {
-                        island_union(find_set(&nodes[i][j]), find_set(&nodes[i][j-1]));
+                        island_union(find_set(&nodes[i][j]), find_set(&nodes[i][j - 1]));
                     }
                 }
             }
-            else{
+            else
+            {
                 nodes[i][j].rank = -1;
             }
-
         }
     }
-    unordered_set<struct island_set_node*> sets;
-    for(int i = 0; i < row; i ++)
+    unordered_set<struct island_set_node *> sets;
+    for (int i = 0; i < row; i++)
     {
-        for(int j = 0; j < column; j++)
+        for (int j = 0; j < column; j++)
         {
-            if(nodes[i][j].rank != -1)
+            if (nodes[i][j].rank != -1)
             {
-                if(sets.count(find_set(&nodes[i][j])) == 0)
+                if (sets.count(find_set(&nodes[i][j])) == 0)
                 {
                     sets.insert(find_set(&nodes[i][j]));
                 }
@@ -1918,9 +2102,9 @@ int solution::numIslands(vector<vector<char>>& grid)
 
 int solution::rangeBitwiseAnd(int m, int n)
 {
-    while(m < n)
+    while (m < n)
     {
-        n &= (n-1);
+        n &= (n - 1);
     }
     return n;
 }
@@ -1931,40 +2115,40 @@ bool solution::isHappy(int n)
     unordered_set<int> present_numbers;
     present_numbers.insert(n);
     m = 0;
-    while(m != 1)
+    while (m != 1)
     {
-        if(present_numbers.find(m) != present_numbers.end())
+        if (present_numbers.find(m) != present_numbers.end())
         {
             return false;
         }
         present_numbers.insert(m);
         m = 0;
-        while(n)
+        while (n)
         {
             r = n % 10;
-            m += r*r;
+            m += r * r;
             n /= 10;
         }
         n = m;
-    } 
+    }
     return true;
 }
 
-ListNode* solution::removeElements(ListNode* head, int val)
+ListNode *solution::removeElements(ListNode *head, int val)
 {
-    ListNode* ret = head;
-    while(ret && ret->val == val)
+    ListNode *ret = head;
+    while (ret && ret->val == val)
     {
         ret = ret->next;
     }
-    ListNode* tmp = ret;
-    if(!tmp)
+    ListNode *tmp = ret;
+    if (!tmp)
     {
         return ret;
     }
-    while(tmp->next)
+    while (tmp->next)
     {
-        if(tmp->next->val == val)
+        if (tmp->next->val == val)
         {
             tmp->next = tmp->next->next;
             continue;
@@ -1976,17 +2160,17 @@ ListNode* solution::removeElements(ListNode* head, int val)
 
 int solution::countPrimes(int n)
 {
-    if(n <= 2)
+    if (n <= 2)
     {
         return 0;
     }
     vector<char> is_prime(n, 1);
     is_prime[0] = is_prime[1] = 0;
-    for(int i = 2; i*i < n; i ++)
+    for (int i = 2; i * i < n; i++)
     {
-        if(is_prime[i])
+        if (is_prime[i])
         {
-            for(int j = i*i; j < n; j += i)
+            for (int j = i * i; j < n; j += i)
             {
                 is_prime[j] = 0;
             }
@@ -2003,25 +2187,25 @@ int solution::superEggDrop(int K, int N)
 
 bool solution::isIsomorphic(string s, string t)
 {
-    unordered_map<char,char> mapping;
+    unordered_map<char, char> mapping;
     unordered_set<char> existed_value;
-    if(s.length() != t.length())
+    if (s.length() != t.length())
     {
         return false;
     }
     size_t len = s.length();
-    for(size_t i = 0; i <len; i++)
+    for (size_t i = 0; i < len; i++)
     {
-        if(mapping.count(s[i]) != 0)
+        if (mapping.count(s[i]) != 0)
         {
-            if(mapping[s[i]] != t[i])
+            if (mapping[s[i]] != t[i])
             {
                 return false;
             }
         }
         else
         {
-            if(existed_value.count(t[i]) != 0)
+            if (existed_value.count(t[i]) != 0)
             {
                 return false;
             }
@@ -2035,71 +2219,74 @@ bool solution::isIsomorphic(string s, string t)
     return true;
 }
 
-bool solution::canFinish(int numCourses, vector<vector<int>>& prerequisites)
+bool solution::canFinish(int numCourses, vector<vector<int>> &prerequisites)
 {
     vector<int> in_degree(numCourses, 0);
     int count = 0;
-    list<int> * adjacent_list = new list<int>[numCourses];
-    for(auto prerequisite : prerequisites)
+    list<int> *adjacent_list = new list<int>[numCourses];
+    for (auto prerequisite : prerequisites)
     {
         //prerequisite[1] before prerequisite[0]
         // out_degre[prerequisite[1]] ++;
-        in_degree[prerequisite[0]] ++;
+        in_degree[prerequisite[0]]++;
         adjacent_list[prerequisite[1]].push_back(prerequisite[0]);
     }
     int i;
-    while(true)
+    while (true)
     {
-        for(i = 0; i < numCourses; i++)
+        for (i = 0; i < numCourses; i++)
         {
-            if(in_degree[i] == 0)
+            if (in_degree[i] == 0)
             {
                 break;
             }
         }
-        if(i == numCourses)
+        if (i == numCourses)
         {
             break;
         }
         in_degree[i] = -1;
-        for(auto adjacent: adjacent_list[i])
+        for (auto adjacent : adjacent_list[i])
         {
-            in_degree[adjacent] --;
+            in_degree[adjacent]--;
         }
-        count ++;
+        count++;
     }
-    if(count == numCourses)
+    if (count == numCourses)
     {
         return true;
     }
     return false;
 }
 
-class Trie {
+class Trie
+{
 public:
     /** Initialize your data structure here. */
-    Trie() {
-        for(int i = 0; i < 26; i++)
+    Trie()
+    {
+        for (int i = 0; i < 26; i++)
         {
             this->link[i] = nullptr;
         }
         this->flag = false;
     }
-    
+
     /** Inserts a word into the trie. */
-    void insert(string word) {
+    void insert(string word)
+    {
         bool ret = this->search(word);
-        if(ret)
+        if (ret)
         {
             return;
         }
         else
         {
-            Trie* t = this;
-            for(char c : word)
+            Trie *t = this;
+            for (char c : word)
             {
                 c -= 'a';
-                if(t->link[c] == nullptr)
+                if (t->link[c] == nullptr)
                 {
                     t->link[c] = new Trie();
                 }
@@ -2108,14 +2295,15 @@ public:
             t->flag = true;
         }
     }
-    
+
     /** Returns if the word is in the trie. */
-    bool search(string word) {
-        Trie* t = this;
-        for(char c: word)
+    bool search(string word)
+    {
+        Trie *t = this;
+        for (char c : word)
         {
             c -= 'a';
-            if(t->link[c] == nullptr)
+            if (t->link[c] == nullptr)
             {
                 return false;
             }
@@ -2126,14 +2314,15 @@ public:
         }
         return t->flag;
     }
-    
+
     /** Returns if there is any word in the trie that starts with the given prefix. */
-    bool startsWith(string prefix) {
-        Trie* t = this;
-        for(char c : prefix)
+    bool startsWith(string prefix)
+    {
+        Trie *t = this;
+        for (char c : prefix)
         {
             c -= 'a';
-            if(t->link[c] == nullptr)
+            if (t->link[c] == nullptr)
             {
                 return false;
             }
@@ -2143,16 +2332,16 @@ public:
             }
         }
         return true;
-
     }
+
 private:
-    Trie* link[26];
+    Trie *link[26];
     bool flag;
 };
 
-int solution::minSubArrayLen(int target, vector<int>& nums)
+int solution::minSubArrayLen(int target, vector<int> &nums)
 {
-    if(nums.size() == 0)
+    if (nums.size() == 0)
     {
         return 0;
     }
@@ -2161,80 +2350,203 @@ int solution::minSubArrayLen(int target, vector<int>& nums)
     int len = nums.size();
     int sum = 0;
     int min_now = INT32_MAX;
-    for(int i = 0; i < len; i++)
+    for (int i = 0; i < len; i++)
     {
-        if(sum < target)
+        if (sum < target)
         {
             sum += nums[i];
             end = i;
         }
         else
         {
-            if(end - start + 1 < min_now)
+            if (end - start + 1 < min_now)
             {
                 min_now = end - start + 1;
             }
             sum += nums[i];
             end = i;
-            while((sum - nums[start]) >= target)
+            while ((sum - nums[start]) >= target)
             {
                 sum -= nums[start++];
             }
         }
     }
-    while((sum - nums[start]) >= target)
+    while ((sum - nums[start]) >= target)
     {
         sum -= nums[start++];
     }
-    if(end - start + 1 < min_now && sum >= target)
+    if (end - start + 1 < min_now && sum >= target)
     {
         min_now = end - start + 1;
     }
-    if(min_now == INT32_MAX)
+    if (min_now == INT32_MAX)
     {
         return 0;
     }
     return min_now;
 }
 
-vector<int> solution::findOrder(int numCourses, vector<vector<int>>& prerequisites)
+vector<int> solution::findOrder(int numCourses, vector<vector<int>> &prerequisites)
 {
     vector<int> in_degree(numCourses, 0);
     vector<int> ret;
     int count = 0;
-    list<int> * adjacent_list = new list<int>[numCourses];
-    for(auto prerequisite : prerequisites)
+    list<int> *adjacent_list = new list<int>[numCourses];
+    for (auto prerequisite : prerequisites)
     {
         //prerequisite[1] before prerequisite[0]
         // out_degre[prerequisite[1]] ++;
-        in_degree[prerequisite[0]] ++;
+        in_degree[prerequisite[0]]++;
         adjacent_list[prerequisite[1]].push_back(prerequisite[0]);
     }
     int i;
-    while(true)
+    while (true)
     {
-        for(i = 0; i < numCourses; i++)
+        for (i = 0; i < numCourses; i++)
         {
-            if(in_degree[i] == 0)
+            if (in_degree[i] == 0)
             {
                 break;
             }
         }
-        if(i == numCourses)
+        if (i == numCourses)
         {
             break;
         }
         in_degree[i] = -1;
         ret.push_back(i);
-        for(auto adjacent: adjacent_list[i])
+        for (auto adjacent : adjacent_list[i])
         {
-            in_degree[adjacent] --;
+            in_degree[adjacent]--;
         }
-        count ++;
+        count++;
     }
-    if(count == numCourses)
+    if (count == numCourses)
     {
         return ret;
     }
     return vector<int>();
+}
+
+bool backtrace(int x, int y, vector<vector<bool>>& visited, int count, string& word, vector<vector<char>>& board, int m, int n)
+{
+    if(count == word.size())
+    {
+        return true;
+    }
+    bool ret;
+    if(x > 0 && !visited[x-1][y] && board[x-1][y] == word[count])
+    {
+        visited[x-1][y] = true;
+        count += 1;
+        ret = backtrace(x-1,y,visited,count, word, board, m, n);
+        if(ret)
+        {
+            visited[x-1][y] = false;
+            return true;
+        }
+        else
+        {
+            visited[x-1][y] = false;
+            count -= 1;
+        }
+    }
+    if(x < m - 1  && !visited[x+1][y] && board[x+1][y] == word[count])
+    {
+        visited[x+1][y] = true;
+        count += 1;
+        ret = backtrace(x+1,y,visited,count, word, board, m, n);
+        if(ret)
+        {
+            visited[x+1][y] = false;
+            return true;
+        }
+        else
+        {
+            visited[x+1][y] = false;
+            count -= 1;
+        }
+    }
+    if(y > 0  && !visited[x][y-1] && board[x][y-1] == word[count])
+    {
+        visited[x][y-1] = true;
+        count += 1;
+        ret = backtrace(x,y-1,visited,count, word, board, m, n);
+        if(ret)
+        {
+            visited[x][y-1] = false;
+            return true;
+        }
+        else
+        {
+            visited[x][y-1] = false;
+            count -= 1;
+        }
+    }
+    if(y < n - 1  && !visited[x][y+1] && board[x][y+1] == word[count])
+    {
+        visited[x][y+1] = true;
+        count += 1;
+        ret = backtrace(x,y+1,visited,count, word, board, m, n);
+        if(ret)
+        {
+            visited[x][y+1] = false;
+            return true;
+        }
+        else
+        {
+            visited[x][y+1] = false;
+            count -= 1;
+        }
+    }
+    return false;
+}
+
+vector<string> solution::findWords(vector<vector<char>> &board, vector<string> &words)
+{
+    int m = board.size();
+    int n;
+    if (m != 0)
+    {
+        n = board[0].size();
+    }
+    vector<vector<bool>> visited(m);
+    unordered_map<char, vector<pair<int, int>>> fast_index;
+    for (int i = 0; i < m; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            if (fast_index.count(board[i][j]) == 0)
+            {
+                fast_index[board[i][j]] = vector<pair<int, int>>();
+            }
+            fast_index[board[i][j]].push_back(make_pair(i, j));
+        }
+    }
+    for (int i = 0; i < m; i++)
+    {
+        visited[i] = vector<bool>(n);
+    }
+    vector<string> ret;
+    for (auto word : words)
+    {
+        auto start_points = fast_index[word[0]];
+        for(auto point : start_points)
+        {
+            int x = point.first;
+            int y = point.second;
+            visited[x][y] = true;
+            if(backtrace(x,y,visited,1,word,board,m,n))
+            {
+                ret.push_back(word);
+                visited[x][y] = false;
+                break;
+            }
+            else
+            {
+                visited[x][y] = false;
+            }
+        }
+    }
+    return ret;
 }
