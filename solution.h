@@ -110,6 +110,7 @@ public:
     bool isIsomorphic(string s, string t); // # 205
     bool canFinish(int numCourses, vector<vector<int>>& prerequisites); // #207
     int minSubArrayLen(int target, vector<int>& nums); // #209
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites); // #210
 };
 
 #endif

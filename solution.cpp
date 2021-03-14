@@ -2038,9 +2038,7 @@ bool solution::isIsomorphic(string s, string t)
 bool solution::canFinish(int numCourses, vector<vector<int>>& prerequisites)
 {
     vector<int> in_degree(numCourses, 0);
-    // int out_degre[numCourses] = {0};
     int count = 0;
-    // bool sorted[numCourses] = {false};
     list<int> * adjacent_list = new list<int>[numCourses];
     for(auto prerequisite : prerequisites)
     {
@@ -2197,4 +2195,46 @@ int solution::minSubArrayLen(int target, vector<int>& nums)
         return 0;
     }
     return min_now;
+}
+
+vector<int> solution::findOrder(int numCourses, vector<vector<int>>& prerequisites)
+{
+    vector<int> in_degree(numCourses, 0);
+    vector<int> ret;
+    int count = 0;
+    list<int> * adjacent_list = new list<int>[numCourses];
+    for(auto prerequisite : prerequisites)
+    {
+        //prerequisite[1] before prerequisite[0]
+        // out_degre[prerequisite[1]] ++;
+        in_degree[prerequisite[0]] ++;
+        adjacent_list[prerequisite[1]].push_back(prerequisite[0]);
+    }
+    int i;
+    while(true)
+    {
+        for(i = 0; i < numCourses; i++)
+        {
+            if(in_degree[i] == 0)
+            {
+                break;
+            }
+        }
+        if(i == numCourses)
+        {
+            break;
+        }
+        in_degree[i] = -1;
+        ret.push_back(i);
+        for(auto adjacent: adjacent_list[i])
+        {
+            in_degree[adjacent] --;
+        }
+        count ++;
+    }
+    if(count == numCourses)
+    {
+        return ret;
+    }
+    return vector<int>();
 }
