@@ -2550,3 +2550,48 @@ vector<string> solution::findWords(vector<vector<char>> &board, vector<string> &
     }
     return ret;
 }
+
+int solution::rob2(vector<int>& nums)
+{
+    if(nums.size() == 0)
+    {
+        return 0;
+    }
+    if(nums.size() == 1)
+    {
+        return nums[0];
+    }
+    if(nums.size() == 2)
+    {
+        return max(nums[0], nums[1]);
+    }
+    if(nums.size() == 3)
+    {
+        return max(nums[0], max(nums[1], nums[2]));
+    }
+    if(nums.size() == 4)
+    {
+        return max(nums[0] + nums[2], nums[1] + nums[3]);
+    }
+    int first, second;
+    // select firset
+    first = nums[2];
+    second = max(nums[2], nums[3]);
+    int len = nums.size();
+    for(int i = 4; i < len - 1; i++)
+    {
+        int tmp = second;
+        second = max(second, first + nums[i]);
+        first = tmp; 
+    }
+    int a = second + nums[0];
+    first = nums[1];
+    second = max(nums[1], nums[2]);
+    for(int i = 3; i < len; i++)
+    {
+        int tmp = second;
+        second = max(second, first + nums[i]);
+        first = tmp;
+    }
+    return max(a, second);
+}

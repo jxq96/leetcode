@@ -3,14 +3,6 @@
 using namespace std;
 int main(){
     solution sol;
-    vector<string> words = {"abcd"};
-    vector<vector<char>> board = {
-        {'a', 'b'},
-        {'c', 'd'}
-    };
-    auto ret = sol.findWords(board, words);
-    for(auto t : ret)
-    {
-        cout << t << " ";
-    }
+    vector<int> nums = {2,1,1,2};
+    int ret = sol.rob2(nums);
 }
