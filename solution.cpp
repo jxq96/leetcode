@@ -2595,3 +2595,50 @@ int solution::rob2(vector<int>& nums)
     }
     return max(a, second);
 }
+
+string solution::shortestPalindrome(string s)
+{
+    if(s.size() == 0)
+    {
+        return s;
+    }
+    char c = s[0];
+    int i;
+    bool flag = false;
+    for(i = s.size() - 1; i > 0; i--)
+    {
+        if(s[i] == c)
+        {
+            int j = 0;
+            int k = i;
+            while(j < k)
+            {
+                if(s[j] != s[k])
+                {
+                    break;
+                }
+                j++;
+                k--;
+            }
+            if(k <= j)
+            {
+                flag = true;
+                break;
+            }
+        }
+    }
+    if(!flag)
+    {
+        i = 0;
+    }
+    int k = s.size() - 1;
+    string ret = string(s.begin() + i + 1,s.begin()+ k + 1);
+    reverse(ret.begin(),ret.end());
+    // while(k > i)
+    // {
+    //     ret += s[k];
+    //     k--;
+    // }
+    ret += s;
+    return ret;
+}

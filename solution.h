@@ -113,6 +113,7 @@ public:
     vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites); // #210
     vector<string> findWords(vector<vector<char>>& board, vector<string>& words); // #212
     int rob2(vector<int>& nums); //#213, circular buildings
+    string shortestPalindrome(string s); // # 214
 };
 
 #endif

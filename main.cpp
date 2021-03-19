@@ -3,6 +3,7 @@
 using namespace std;
 int main(){
     solution sol;
-    vector<int> nums = {2,1,1,2};
-    int ret = sol.rob2(nums);
+    string t1 = "aacecaaa";
+    string t2 = "abbacd";
+    cout << sol.shortestPalindrome(t2) << " " << sol.shortestPalindrome(t2) << endl;
 }
