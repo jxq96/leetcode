@@ -3,7 +3,12 @@
 using namespace std;
 int main(){
     solution sol;
-    string t1 = "aacecaaa";
-    string t2 = "abbacd";
-    cout << sol.shortestPalindrome(t2) << " " << sol.shortestPalindrome(t2) << endl;
+    ListNode* l = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5)))));
+    auto ret = sol.reverseKGroup(l, 2);
+    while(ret)
+    {
+        cout << ret->val << " ";
+        ret = ret->next;
+    }
+    cout << "\n";
 }

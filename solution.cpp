@@ -2642,3 +2642,354 @@ string solution::shortestPalindrome(string s)
     ret += s;
     return ret;
 }
+
+void solution::combinationsum_recur(int cur, int n, int k, int sum)
+{
+    if(tmp.size() + (n - cur + 1) < k || tmp.size() > k)
+    {
+        return;
+    }
+    if(tmp.size() == k && accumulate(tmp.begin(),tmp.end(),0) == sum)
+    {
+        ret.push_back(tmp);
+        return;
+    }
+    tmp.push_back(cur);
+    combinationsum_recur(cur + 1, n, k, sum);
+    tmp.pop_back();
+    combinationsum_recur(cur + 1, n, k, sum);
+}
+
+vector<vector<int>> solution::combinationSum3(int k, int n)
+{
+    combinationsum_recur(1,9,k,n);
+    return ret;
+}
+
+bool solution::containsDuplicate(vector<int>& nums)
+{
+    unordered_set<int> record;
+    for(auto element: nums)
+    {
+        if(record.count(element) == 0)
+        {
+            record.insert(element);
+        }
+        else
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool solution::containsNearbyDuplicate(vector<int>& nums, int k)
+{
+    unordered_map<int, int> record;
+    int length = nums.size();
+    for(int i = 0; i < length; i++)
+    {
+        if(record.count(nums[i]) != 0)
+        {
+            if(i - record[nums[i]] <= k)
+            {
+                return true;
+            }
+            record[nums[i]] = i;
+        }
+        else
+        {
+            record[nums[i]] = i;
+        }
+    }
+    return false;
+}
+
+long get_id(long x, long w)
+{
+    return x < 0? (x/w)-1:x/w;
+}
+
+bool solution::containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t)
+{
+    // Naive solution: Time Exceed
+    // int length = nums.size();
+    // for(int i = 0; i < length; i++)
+    // {
+    //     for(int j = 1; j <=k && i + j < length; j++)
+    //     {
+    //         if(abs(nums[i] - nums[i+j]) <= t)
+    //         {
+    //             return true;
+    //         }
+    //     }
+    // }
+    // return false;
+    int length = nums.size();
+    if(t < 0)
+    {
+        return false;
+    }
+    map<long, long> budget;
+    long w = (long)t + 1;
+    for(int i = 0; i < length; i++)
+    {
+        long key = get_id(nums[i], w);
+        if(budget.count(key) != 0)
+        {
+            return true;
+        }
+        if(budget.count(key - 1) && abs(budget[key-1] - nums[i]) < w)
+        {
+            return true;
+        }
+        if(budget.count(key+1) && abs(budget[key+1]-nums[i]) < w)
+        {
+            return true;
+        }
+        budget[key] = (long)(nums[i]);
+        if(i>=k)
+        budget.erase(get_id(nums[i-k],w));
+    }
+    return false;
+}
+
+
+int solution::maximalSquare(vector<vector<char>>& matrix)
+{
+
+    //Naive Solution: Time Exceed！
+    int ret = 0;
+    int row = matrix.size();
+    int column = row==0?0:matrix[0].size();
+    int now_max = 0;
+    bool flag = false;
+    for(int i = 0; i < row; i ++)
+    {
+        for(int j = 0; j < column; j ++)
+        {
+            if(matrix[i][j] == '1')
+            {
+                if(ret == 0)
+                {
+                    ret = 1;
+                }
+                int k = 1;
+                while(i + k < row && j + k < column)
+                {
+                    int m = 0;
+                    while(m <= k)
+                    {
+                        if(matrix[i+m][j+k] != '1')
+                        {
+                            flag = true;
+                            break;
+                        }
+                        m++;
+                    }
+                    if(flag)
+                    {
+                        flag = false;
+                        break;
+                    }
+                    m = 0;
+                    while(m <= k)
+                    {
+                        if(matrix[i+k][j+m] != '1')
+                        {
+                            flag = true;
+                            break;
+                        }
+                        m++;
+                    }
+                    if(!flag)
+                    {
+                        if(ret < (k+1)*(k+1))
+                        {
+                            ret = (k+1)*(k+1);
+                        }
+                        k++;
+                        continue;
+                    }
+                    else
+                    {
+                        flag = false;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    return ret;
+}
+
+int solution::maximalSquare_dp(vector<vector<char>>& matrix)
+{
+    int row = matrix.size();
+    int column = row == 0?0:matrix[0].size();
+    int ret = 0;
+    if(row == 0)
+    {
+        return 0;
+    }
+    vector<vector<int>> dp(row, vector<int>(column));
+    for(int i = 0; i < column; i++)
+    {
+        if(matrix[0][i] == '1')
+        {
+            dp[0][i] = 1;
+            ret = 1;
+        }
+        else
+        {
+            dp[0][i] = 0;
+        }
+    }
+    for(int i = 0; i < row; i++)
+    {
+        if(matrix[i][0] == '1')
+        {
+            dp[i][0] = 1;
+            ret = 1;
+        }
+        else
+        {
+            dp[i][0] = 0;
+        }
+    }
+    for(int i = 1; i < row; i++)
+    {
+        for(int j = 1; j < column; j++)
+        {
+            dp[i][j] = matrix[i][j] == '1'? min(dp[i-1][j],min(dp[i-1][j-1],dp[i][j-1]))+1 : 0;
+            int tmp = dp[i][j]*dp[i][j];
+            if(tmp > ret)
+            {
+                ret = tmp;
+            }
+        }
+    }
+    return ret;
+}
+
+int solution::countNodes(TreeNode* root)
+{
+    int level = 0;
+    int ret;
+    TreeNode *tmp = root;
+    if(tmp == NULL)
+    {
+        return 0;
+    }
+    if(tmp->left == NULL)
+    {
+        return 1;
+    }
+    long low = 0;
+    long high = 1;
+    long mid = (low + high)/2;
+    while(tmp->left)
+    {
+        tmp = tmp->left;
+        level ++;
+        high *=2;
+    }
+    high -= 1;
+    ret = high;
+    while(high - low > 1)
+    {
+        tmp = root;
+        mid = (low + high) / 2;
+        long mask = 1 << (level - 1);
+        while(mask)
+        {
+            if(mask & mid)
+            {
+                tmp = tmp->right;
+            }
+            else
+            {
+                tmp = tmp->left;
+            }
+            mask >>= 1;
+        }
+        if(tmp)
+        {
+            low = mid;
+            mid = (low + high) / 2;
+        }
+        else
+        {
+            high = mid;
+            mid = (low + high) / 2;
+        }
+    }
+    if(high == low + 1)
+    {
+        long mask = 1 << (level - 1);
+        tmp = root;
+        while(mask)
+        {
+            if(mask & high)
+            {
+                tmp = tmp->right;
+            }
+            else
+            {
+                tmp = tmp->right;
+            }
+            mask >>= 1;
+        }
+        if(tmp)
+        {
+            ret += high + 1;
+        }
+        else
+        {
+            ret += low + 1;
+        }
+        return ret;
+    }
+    ret += mid;
+    return ret;
+}
+
+ListNode* solution::reverseKGroup(ListNode* head, int k)
+{
+    if(k == 1)
+    {
+        return head;
+    }
+    ListNode* tmphead = head;
+    ListNode* tmpmove = head;
+    ListNode* tmp, *next, *ret, *prev = NULL;
+    ret = head;
+    bool flag = true; // first group head should return
+    int count = 1;
+    while(tmpmove)
+    {
+        count ++;
+        tmpmove = tmpmove->next;
+        if(count == k && tmpmove)
+        {
+            next = tmpmove->next;
+            tmpmove->next = NULL;
+            tmp = this->reverse_list(tmphead);
+            if(flag)
+            {
+                ret = tmp;
+                flag = false;
+            }
+            tmphead->next = next;
+            if(prev)
+            {
+                prev->next = tmp;
+            }
+            prev = tmphead;
+            count = 1;
+            tmphead = next;
+            tmpmove = next;
+        }
+    }
+    return ret;
+}

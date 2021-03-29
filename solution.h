@@ -45,6 +45,9 @@ class solution
 {
 private:
     int maxPathSumReturn;
+    vector<int> tmp;
+    vector<vector<int>> ret;
+    int maximum;
     
 public:
     solution() = default;
@@ -114,6 +117,15 @@ public:
     vector<string> findWords(vector<vector<char>>& board, vector<string>& words); // #212
     int rob2(vector<int>& nums); //#213, circular buildings
     string shortestPalindrome(string s); // # 214
+    vector<vector<int>> combinationSum3(int k, int n); // #216
+    void combinationsum_recur(int cur, int n, int k, int sum);
+    bool containsDuplicate(vector<int>& nums); // #217
+    bool containsNearbyDuplicate(vector<int>& nums, int k); //#219
+    bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t); // #220
+    int maximalSquare(vector<vector<char>>& matrix); // #221
+    int maximalSquare_dp(vector<vector<char>>& matrix);
+    int countNodes(TreeNode* root); // # 222
+    ListNode* reverseKGroup(ListNode* head, int k); // #25
 };
 
 #endif
